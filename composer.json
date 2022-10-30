@@ -1,0 +1,54 @@
+{
+    "name": "figuren-theater/ft-data",
+    "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
+    "type": "wordpress-muplugin",
+    "license": "GPL-3",
+    "version": "1.0.0",
+    "extra": {
+        "installer-name": "Data"
+    },
+    "autoload": {
+        "psr-4": {
+            "Figuren_Theater\\Data\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Carsten Bach"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/figuren-theater/ft-core"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/carstingaxion/shadow-taxonomy"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/humanmade/hm-utility-taxonomy"
+        },
+        {
+            "type": "composer",
+            "url" : "https://wpackagist.org"
+        },
+        {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "figuren-theater/ft-core": "^1",
+        "composer/installers": "~1",
+        "devgeniem/shadow-taxonomy": "dev-master",
+        "humanmade/utility-taxonomy": "^1.4",
+        "johnbillion/extended-cpts": "^5.0",
+        "wpackagist-plugin/attachment-taxonomies": "1.1.1",
+        "wpackagist-plugin/term-management-tools": "2.0.1"
+    }
+}
