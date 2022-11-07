@@ -4,9 +4,6 @@
     "type": "wordpress-muplugin",
     "license": "GPL-3",
     "version": "1.0.1",
-    "extra": {
-        "installer-name": "Data"
-    },
     "autoload": {
         "psr-4": {
             "Figuren_Theater\\Data\\": "src/"
@@ -14,19 +11,29 @@
     },
     "authors": [
         {
-            "name": "Carsten Bach"
+            "name": "figuren.theater",
+            "email": "info@figuren.theater"
         }
     ],
-    "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
-        "figuren-theater/ft-core": "^1",
+        "figuren-theater/ft-core": "dev-master",
         "composer/installers": "~1",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5.0",
         "wpackagist-plugin/attachment-taxonomies": "1.1.1",
         "wpackagist-plugin/term-management-tools": "2.0.1"
+    },
+    "extra": {
+        "altis": {
+            "install-overrides": [
+                "devgeniem/shadow-taxonomy",
+                "humanmade/utility-taxonomy",
+                "johnbillion/extended-cpts",
+                "wpackagist-plugin/attachment-taxonomies",
+                "wpackagist-plugin/term-management-tools"
+            ]
+        }
     }
 }
