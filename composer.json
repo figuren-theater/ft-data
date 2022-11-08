@@ -3,7 +3,7 @@
     "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
     "type": "wordpress-muplugin",
     "license": "GPL-3",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "autoload": {
         "psr-4": {
             "Figuren_Theater\\Data\\": "src/"
