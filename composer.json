@@ -25,7 +25,7 @@
         {
             "type": "composer",
             "url" : "https://packagist.org"
-        }
+        },
         {
             "type": "composer",
             "url" : "https://wpackagist.org"
