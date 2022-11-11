@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:     figuren.theater | Data
- * Plugin URI:      https://github.com/figuren-theater/ft-core
+ * Plugin URI:      https://github.com/figuren-theater/ft-data
  * Description:     Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater
- * Author:          Carsten Bach
+ * Author:          figuren.theater
  * Author URI:      https://figuren.theater
- * Text Domain:     ft-data
+ * Text Domain:     figurentheater
  * Domain Path:     /languages
- * Version:         1.0.3
+ * Version:         1.0.4
  *
  * @package         Figuren_Theater\Data
  */
@@ -17,5 +17,4 @@ namespace Figuren_Theater\Data;
 
 const DIRECTORY = __DIR__;
 
-// add_action( 'Figuren_Theater\\Services\\init', __NAMESPACE__ . '\\register' );
-
+#add_action( 'altis.modules.init', __NAMESPACE__ . '\\register' );

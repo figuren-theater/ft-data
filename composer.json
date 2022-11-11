@@ -2,23 +2,23 @@
     "name": "figuren-theater/ft-data",
     "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
     "type": "wordpress-muplugin",
-    "license": "GPL-3",
-    "version": "1.0.3",
-    "autoload": {
-        "psr-4": {
-            "Figuren_Theater\\Data\\": "src/"
-        }
-    },
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "figuren.theater",
             "email": "info@figuren.theater"
         }
     ],
+    "autoload": {
+        "files": [
+            "inc/namespace.php"
+        ],
+        "classmap": [
+            "inc/"
+        ]
+    },
     "require": {
         "php": ">=7.1",
-        "figuren-theater/ft-core": "^1",
-        "composer/installers": "~1",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5.0",
