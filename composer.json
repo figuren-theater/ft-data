@@ -17,6 +17,20 @@
             "inc/"
         ]
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/devgeniem/shadow-taxonomy"
+        },
+        {
+            "type": "composer",
+            "url" : "https://packagist.org"
+        }
+        {
+            "type": "composer",
+            "url" : "https://wpackagist.org"
+        }
+    ],
     "require": {
         "php": ">=7.1",
         "devgeniem/shadow-taxonomy": "dev-master",
