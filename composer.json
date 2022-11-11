@@ -19,8 +19,12 @@
     },
     "repositories": [
         {
-            "type": "git",
+            "type": "vcs",
             "url": "https://github.com/carstingaxion/shadow-taxonomy"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/humanmade/hm-utility-taxonomy"
         },
         {
             "type": "composer",
