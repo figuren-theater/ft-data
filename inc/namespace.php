@@ -32,5 +32,5 @@ function register() {
  */
 function bootstrap() {
 
-	// ...\bootstrap();
+	Term_Management_Tools\bootstrap();
 }
