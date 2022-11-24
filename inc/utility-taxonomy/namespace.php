@@ -1,11 +1,11 @@
 <?php
 /**
- * Figuren_Theater Media Utility_Taxonomy.
+ * Figuren_Theater Data Utility_Taxonomy.
  *
- * @package figuren-theater/media/utility_taxonomy
+ * @package figuren-theater/data/utility_taxonomy
  */
 
-namespace Figuren_Theater\Media\Utility_Taxonomy;
+namespace Figuren_Theater\Data\Utility_Taxonomy;
 
 use FT_VENDOR_DIR;
 

@@ -1,11 +1,11 @@
 <?php
 /**
- * Figuren_Theater Media Term_Management_Tools.
+ * Figuren_Theater Data Term_Management_Tools.
  *
- * @package figuren-theater/media/term_management_tools
+ * @package figuren-theater/data/term_management_tools
  */
 
-namespace Figuren_Theater\Media\Term_Management_Tools;
+namespace Figuren_Theater\Data\Term_Management_Tools;
 
 use FT_VENDOR_DIR;
 
