@@ -1,17 +1,31 @@
 {
     "name": "figuren-theater/ft-data",
     "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
+    "homepage": "https://websites.fuer.figuren.theater",
     "type": "wordpress-muplugin",
+    "keywords": ["wordpress", "data", "posttypes", "taxonomies"],
     "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "figuren.theater",
             "email": "info@figuren.theater"
+        },
+        {
+            "name": "Carsten Bach",
+            "email": "mail@carsten-bach.de",
+            "homepage": "https://carsten-bach.de",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "email": "info@figuren.theater",
+        "issues": "https://github.com/figuren-theater/ft-data/issues",
+        "source": "https://github.com/figuren-theater/ft-data"
+    },
     "autoload": {
         "files": [
             "inc/term-management-tools/namespace.php",
+            "inc/utility-taxonomy/namespace.php",
             "inc/namespace.php"
         ],
         "classmap": [
@@ -26,10 +40,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/humanmade/hm-utility-taxonomy"
-        },
-        {
-            "type": "composer",
-            "url" : "https://packagist.org"
         },
         {
             "type": "composer",

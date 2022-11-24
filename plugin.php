@@ -7,7 +7,7 @@
  * Author URI:      https://figuren.theater
  * Text Domain:     figurentheater
  * Domain Path:     /languages
- * Version:         1.0.9
+ * Version:         1.0.10
  *
  * @package         Figuren_Theater\Data
  */
@@ -17,4 +17,4 @@ namespace Figuren_Theater\Data;
 
 const DIRECTORY = __DIR__;
 
-#add_action( 'altis.modules.init', __NAMESPACE__ . '\\register' );
+add_action( 'altis.modules.init', __NAMESPACE__ . '\\register' );

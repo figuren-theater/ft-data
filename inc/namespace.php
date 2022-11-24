@@ -14,15 +14,19 @@ use function Altis\register_module;
  * Register module.
  */
 function register() {
+
+	$default_settings = [
+		'enabled' => true, // needs to be set
+	];
+	$options = [
+		'defaults' => $default_settings,
+	];
+
 	Altis\register_module(
 		'data',
 		DIRECTORY,
 		'Data',
-		[
-			'defaults' => [
-				'enabled' => true,
-			],
-		],
+		$options,
 		__NAMESPACE__ . '\\bootstrap'
 	);
 }
@@ -33,4 +37,5 @@ function register() {
 function bootstrap() {
 
 	Term_Management_Tools\bootstrap();
+	Utility_Taxonomy\bootstrap();
 }
