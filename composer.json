@@ -3,7 +3,7 @@
     "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
     "homepage": "https://websites.fuer.figuren.theater",
     "type": "wordpress-muplugin",
-    "keywords": ["wordpress", "data", "posttypes", "taxonomies"],
+    "keywords": ["wordpress", "data", "posttypes", "taxonomies", "syndication"],
     "license": "GPL-3.0-or-later",
     "authors": [
         {
@@ -24,6 +24,7 @@
     },
     "autoload": {
         "files": [
+            "inc/distributor/namespace.php",
             "inc/term-management-tools/namespace.php",
             "inc/utility-taxonomy/namespace.php",
             "inc/namespace.php"
@@ -34,11 +35,15 @@
     },
     "repositories": [
         {
-            "type": "vcs",
+            "type": "git",
+            "url": "https://github.com/10up/distributor"
+        },
+        {
+            "type": "git",
             "url": "https://github.com/carstingaxion/shadow-taxonomy"
         },
         {
-            "type": "vcs",
+            "type": "git",
             "url": "https://github.com/humanmade/hm-utility-taxonomy"
         },
         {
@@ -48,6 +53,7 @@
     ],
     "require": {
         "php": ">=7.1",
+        "10up/distributor": "^1.8",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5.0",
@@ -56,6 +62,7 @@
     "extra": {
         "altis": {
             "install-overrides": [
+                "10up/distributor",
                 "devgeniem/shadow-taxonomy",
                 "humanmade/utility-taxonomy",
                 "johnbillion/extended-cpts",
