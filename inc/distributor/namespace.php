@@ -27,7 +27,7 @@ use function Figuren_Theater\get_config;
 use function add_action;
 use function add_filter;
 use function current_user_can;
-use function remove_submenu_page;
+use function remove_menu_page;
 use function remove_action;
 
 const BASENAME   = 'distributor/distributor.php';
@@ -52,8 +52,12 @@ function load_plugin() {
 
 	require_once PLUGINPATH;
 
+	// Filters the arguments for registering a post type.
+	add_filter( 'register_post_type_args', __NAMESPACE__ . '\\register_post_type_args', 20, 2 );
+
 	// Remove plugins menu
 	add_action( 'network_admin_menu', __NAMESPACE__ . '\\remove_menu', 11 );
+	add_action( 'admin_menu', __NAMESPACE__ . '\\remove_menu', 11 );
 
 	add_action( 'admin_init', __NAMESPACE__ . '\\admin_init', 0 );
 }
@@ -66,9 +70,6 @@ function admin_init() {
 	// 'puc_check_now-distributor' => '__return_false',
 	// 
 	
-	// Filters the arguments for registering a post type.
-	add_filter( 'register_post_type_args', __NAMESPACE__ . '\\register_post_type_args', 20, 2 );
-
 	// Allow bypassing of all media processing.
 	add_filter( 'dt_push_post_media', __NAMESPACE__ . '\\dt_push_post_media' );
 
@@ -91,7 +92,7 @@ function filter_options() : void {
 		'media_handling'         => 'featured',
 		'email'                  => getenv( 'FT_DATA_DISTRIBUTOR_EMAIL' ),
 		'license_key'            => getenv( 'FT_DATA_DISTRIBUTOR_KEY' ),
-		'valid_license'          => true,
+		'valid_license'          => false, // Distributor: "Enable updates if we have a valid license" --> f.t ;)
 	];
 
 	// gets added to the 'OptionsCollection' 
@@ -117,7 +118,7 @@ function filter_options() : void {
 
 
 function remove_menu() : void {
-	remove_submenu_page( 'settings.php', 'distributor' );
+	remove_menu_page( 'distributor' );
 }
 
 function remove_columns_from_lists() : void {
