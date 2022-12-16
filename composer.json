@@ -53,7 +53,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "10up/distributor": "^1.8",
+        "10up/distributor": "^1.9",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5.0",
