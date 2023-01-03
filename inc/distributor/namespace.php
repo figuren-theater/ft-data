@@ -49,6 +49,10 @@ function load_plugin() {
 	// to normal 'administrator' users
 	if ( ! defined( 'DISTRIBUTOR_DEBUG' ) && 'local' === WP_ENVIRONMENT_TYPE )
 		define( 'DISTRIBUTOR_DEBUG', WP_DEBUG );
+	
+	// the plugin checks for option 'active_sitewide_plugins'
+	// so we need to filter 'active_sitewide_plugins'
+	add_filter( 'site_option_active_sitewide_plugins', __NAMESPACE__ . '\\filter_site_option', 0 );
 
 	require_once PLUGINPATH;
 
@@ -82,6 +86,13 @@ function admin_init() {
 
 	// 
 	// \add_filter( 'pre_site_option_external_updates-distributor', [ $this, 'pre_disable_updatecheck' ] );
+}
+
+
+
+function filter_site_option( $active_sitewide_plugins ) {
+	$active_sitewide_plugins[ BASENAME ] = BASENAME;
+	return $active_sitewide_plugins;
 }
 
 function filter_options() : void {
