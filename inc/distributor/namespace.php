@@ -91,6 +91,13 @@ function admin_init() {
 
 
 function filter_site_option( $active_sitewide_plugins ) {
+	
+	// prevents the default admin-notice for missing plugin files, 
+	// which gets triggered by the FT_VENDOR_DIR path construct
+	global $pagenow;
+	if ( 'plugins.php' === $pagenow )
+		return $active_sitewide_plugins;
+
 	$active_sitewide_plugins[ BASENAME ] = BASENAME;
 	return $active_sitewide_plugins;
 }
