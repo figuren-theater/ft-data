@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6ad6b89da10e2c5cbec7cd0b1fd2341",
+    "content-hash": "069015368e3e3a23b701f3b8a35614f4",
     "packages": [
         {
             "name": "10up/distributor",
@@ -243,6 +243,48 @@
             "description": "A library used for create relationships between CPT's",
             "homepage": "https://github.com/devgeniem/shadow-taxonomy",
             "time": "2021-03-07T23:43:02+00:00"
+        },
+        {
+            "name": "figuren-theater/ft-network-sourcelinks",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/figuren-theater/ft-network-sourcelinks",
+                "reference": "7902e175598f78c6a7e60a266847d27a847de5b8"
+            },
+            "require": {
+                "johnpbloch/wordpress": "^6.0",
+                "php": ">=7.1"
+            },
+            "type": "wordpress-plugin",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "figuren.theater",
+                    "email": "info@figuren.theater"
+                },
+                {
+                    "name": "Carsten Bach",
+                    "email": "mail@carsten-bach.de",
+                    "homepage": "https://carsten-bach.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Manage external Links as 'other' personal profiles or external sources. Handles syncing content from thoose sites, (NOT YET: using RSS-Bridge, friends,) and the old native WordPress Link-Manager a little modified.",
+            "homepage": "https://websites.fuer.figuren.theater",
+            "keywords": [
+                "links",
+                "wordpress",
+                "wordpress-plugin"
+            ],
+            "support": {
+                "email": "info@figuren.theater",
+                "issues": "https://github.com/figuren-theater/ft-network-sourcelinks/issues",
+                "source": "https://github.com/figuren-theater/ft-network-sourcelinks"
+            },
+            "time": "2023-01-08T22:57:39+00:00"
         },
         {
             "name": "georgestephanis/application-passwords",
@@ -512,6 +554,154 @@
                 }
             ],
             "time": "2022-12-14T00:07:21+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress",
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress.git",
+                "reference": "d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8",
+                "reference": "d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8",
+                "shasum": ""
+            },
+            "require": {
+                "johnpbloch/wordpress-core": "6.1.1",
+                "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
+                "php": ">=5.6.20"
+            },
+            "type": "package",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "https://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+            "homepage": "https://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "support": {
+                "docs": "https://developer.wordpress.org/",
+                "forum": "https://wordpress.org/support/",
+                "irc": "irc://irc.freenode.net/wordpress",
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://core.trac.wordpress.org/browser"
+            },
+            "time": "2022-11-15T19:12:03+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core",
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core.git",
+                "reference": "c9688597721b8579f3c29028e572a7b9753db893"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/c9688597721b8579f3c29028e572a7b9753db893",
+                "reference": "c9688597721b8579f3c29028e572a7b9753db893",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6.20"
+            },
+            "provide": {
+                "wordpress/core-implementation": "6.1.1"
+            },
+            "type": "wordpress-core",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "https://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+            "homepage": "https://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "support": {
+                "forum": "https://wordpress.org/support/",
+                "irc": "irc://irc.freenode.net/wordpress",
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://core.trac.wordpress.org/browser",
+                "wiki": "https://codex.wordpress.org/"
+            },
+            "time": "2022-11-15T19:11:58+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core-installer",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core-installer.git",
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/237faae9a60a4a2e1d45dce1a5836ffa616de63e",
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": ">=5.6.0"
+            },
+            "conflict": {
+                "composer/installers": "<1.0.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0 || ^2.0",
+                "phpunit/phpunit": ">=5.7.27"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "johnpbloch\\Composer\\WordPressCorePlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "johnpbloch\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "John P. Bloch",
+                    "email": "me@johnpbloch.com"
+                }
+            ],
+            "description": "A custom installer to handle deploying WordPress with composer",
+            "keywords": [
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/johnpbloch/wordpress-core-installer/issues",
+                "source": "https://github.com/johnpbloch/wordpress-core-installer/tree/master"
+            },
+            "time": "2020-04-16T21:44:57+00:00"
         },
         {
             "name": "wpackagist-plugin/term-management-tools",
