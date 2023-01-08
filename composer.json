@@ -3,7 +3,7 @@
     "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
     "homepage": "https://websites.fuer.figuren.theater",
     "type": "wordpress-muplugin",
-    "keywords": ["wordpress", "data", "posttypes", "taxonomies", "syndication"],
+    "keywords": ["wordpress", "data", "posttypes", "taxonomies", "syndication", "rss"],
     "license": "GPL-3.0-or-later",
     "authors": [
         {
@@ -25,6 +25,7 @@
     "autoload": {
         "files": [
             "inc/distributor/namespace.php",
+            "inc/ft-network-sourcelinks/namespace.php",
             "inc/term-management-tools/namespace.php",
             "inc/utility-taxonomy/namespace.php",
             "inc/namespace.php"
@@ -44,6 +45,10 @@
         },
         {
             "type": "git",
+            "url": "https://github.com/figuren-theater/ft-network-sourcelinks"
+        },
+        {
+            "type": "git",
             "url": "https://github.com/humanmade/hm-utility-taxonomy"
         },
         {
@@ -53,6 +58,7 @@
     ],
     "require": {
         "php": ">=7.1",
+        "figuren-theater/ft-network-sourcelinks": "^1.0",
         "10up/distributor": "^1.9",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
@@ -62,6 +68,7 @@
     "extra": {
         "altis": {
             "install-overrides": [
+                "figuren-theater/ft-network-sourcelinks",
                 "10up/distributor",
                 "devgeniem/shadow-taxonomy",
                 "humanmade/utility-taxonomy",

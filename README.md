@@ -20,6 +20,8 @@ Thoose are completely managed by code and lack of their typical UI.
 * [Term Management Tools](https://wordpress.org/plugins/term-management-tools/#developers)
     Allows you to merge terms, move terms between taxonomies, and set term parents, individually or in bulk.
 
+* [figuren-theater/ft-network-sourcelinks](https://github.com/figuren-theater/ft-network-sourcelinks)
+    Manage external Links as 'other' personal profiles or external sources. Handles syncing content from thoose sites, (NOT YET: using RSS-Bridge, friends,) and the old native WordPress Link-Manager a little modified.
 
 ## What does this package do in addition?
 
