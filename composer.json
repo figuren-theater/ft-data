@@ -62,8 +62,8 @@
         "10up/distributor": "^1.9",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
-        "johnbillion/extended-cpts": "^5.0",
-        "wpackagist-plugin/term-management-tools": "2.0.1"
+        "johnbillion/extended-cpts": "^5",
+        "wpackagist-plugin/term-management-tools": "^2.0"
     },
     "extra": {
         "altis": {

@@ -9,7 +9,7 @@ Data structures, posttypes and taxonomies for a WordPress Multisite like [figure
 This package contains the following plugins. 
 Thoose are completely managed by code and lack of their typical UI.
 
-* [Distributor](https://distributorplugin.com/)
+* [Distributor](https://github.com/10up/distributor)
     Distributor is a WordPress plugin that makes it easy to syndicate and reuse content ...
 * [Utility Taxonomy](https://github.com/humanmade/hm-utility-taxonomy)
     A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.
