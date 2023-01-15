@@ -1,11 +1,11 @@
 <?php
 /**
- * Figuren_Theater Site_Editing FT_Network_Sourcelinks.
+ * Figuren_Theater Data FT_Network_Sourcelinks.
  *
- * @package figuren-theater/site_editing/ft_network_sourcelinks
+ * @package figuren-theater/data/ft_network_sourcelinks
  */
 
-namespace Figuren_Theater\Site_Editing\FT_Network_Sourcelinks;
+namespace Figuren_Theater\Data\FT_Network_Sourcelinks;
 
 use WP_PLUGIN_DIR;
 
@@ -31,8 +31,8 @@ function load_plugin() {
 	// Not for:
 	// - network-admin views
 	// - user-admin views
-	if ( is_network_admin() || is_user_admin() )
-		return;
+	#if ( is_network_admin() || is_user_admin() )
+	#	return;
 	
 	require_once PLUGINPATH;
 }
