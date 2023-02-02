@@ -25,6 +25,7 @@
     "autoload": {
         "files": [
             "inc/distributor/namespace.php",
+            "inc/distributor-remote-quickedit/namespace.php",
             "inc/ft-network-sourcelinks/namespace.php",
             "inc/term-management-tools/namespace.php",
             "inc/utility-taxonomy/namespace.php",
@@ -38,6 +39,10 @@
         {
             "type": "git",
             "url": "https://github.com/10up/distributor"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/carstingaxion/distributor-remote-quickedit"
         },
         {
             "type": "git",
@@ -60,6 +65,7 @@
         "php": ">=7.1",
         "figuren-theater/ft-network-sourcelinks": "^1.0",
         "10up/distributor": "^1.9",
+        "carstingaxion/distributor-remote-quickedit": "^0.2",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5",
@@ -70,6 +76,7 @@
             "install-overrides": [
                 "figuren-theater/ft-network-sourcelinks",
                 "10up/distributor",
+                "carstingaxion/distributor-remote-quickedit",
                 "devgeniem/shadow-taxonomy",
                 "humanmade/utility-taxonomy",
                 "johnbillion/extended-cpts",
