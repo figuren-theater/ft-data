@@ -1,6 +1,6 @@
 {
     "name": "figuren-theater/ft-data",
-    "description": "Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater",
+    "description": "Data structures, posttypes and taxonomies including ways to relate thoose for a WordPress multisite network like figuren.theater",
     "homepage": "https://websites.fuer.figuren.theater",
     "type": "wordpress-muplugin",
     "keywords": ["wordpress", "data", "posttypes", "taxonomies", "syndication", "rss"],
