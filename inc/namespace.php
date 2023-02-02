@@ -37,6 +37,7 @@ function register() {
 function bootstrap() {
 
 	Distributor\bootstrap();
+	// Feed_Pull\bootstrap();
 	FT_Network_Sourcelinks\bootstrap();
 	Term_Management_Tools\bootstrap();
 	Utility_Taxonomy\bootstrap();
