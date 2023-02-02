@@ -17,6 +17,7 @@ function register() {
 
 	$default_settings = [
 		'enabled' => true, // needs to be set
+		'distributor-remote-quickedit' => false,
 	];
 	$options = [
 		'defaults' => $default_settings,
@@ -37,6 +38,7 @@ function register() {
 function bootstrap() {
 
 	Distributor\bootstrap();
+	Distributor_Remote_Quickedit\bootstrap();
 	FT_Network_Sourcelinks\bootstrap();
 	Term_Management_Tools\bootstrap();
 	Utility_Taxonomy\bootstrap();

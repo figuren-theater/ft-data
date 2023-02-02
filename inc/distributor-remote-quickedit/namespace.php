@@ -9,7 +9,13 @@ namespace Figuren_Theater\Data\Distributor_Remote_Quickedit;
 
 use FT_VENDOR_DIR;
 
+use Figuren_Theater;
+use function Figuren_Theater\get_config;
+
 use function add_action;
+use function is_admin;
+use function is_network_admin;
+use function is_user_admin;
 
 const BASENAME   = 'distributor-remote-quickedit/distributor-remote-quickedit.php';
 const PLUGINPATH = FT_VENDOR_DIR . '/carstingaxion/' . BASENAME;
@@ -24,13 +30,17 @@ function bootstrap() {
 
 function load_plugin() {
 
+	$config = Figuren_Theater\get_config()['modules']['data'];
+	if ( ! $config['distributor-remote-quickedit'] )
+		return; // early
+
 	// Do only load in "normal" admin view
-	// and public views
 	// Not for:
+	// - and public views
 	// - network-admin views
 	// - user-admin views
-	#if ( is_network_admin() || is_user_admin() )
-	#	return;
+	if ( ! is_admin() || is_network_admin() || is_user_admin() )
+		return;
 	
 	require_once PLUGINPATH;
 }
