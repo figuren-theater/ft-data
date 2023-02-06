@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9059bd5a7457dac751377ae093447e50",
+    "content-hash": "75008b94d422f8f6406d3873b3586454",
     "packages": [
         {
             "name": "10up/distributor",
@@ -56,6 +56,40 @@
             "description": "Distributor is a WordPress plugin that makes it easy to distribute and reuse content across your websites — whether in a single multisite or across the web.",
             "homepage": "https://distributorplugin.com/",
             "time": "2022-12-15T23:26:53+00:00"
+        },
+        {
+            "name": "carstingaxion/distributor-remote-quickedit",
+            "version": "dev-temp-composer",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carstingaxion/distributor-remote-quickedit",
+                "reference": "f144a6bb7fac156c633d1e26356f309e7a329520"
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "wordpress-plugin",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "figuren.theater",
+                    "email": "info@figuren.theater"
+                },
+                {
+                    "name": "Carsten Bach",
+                    "email": "mail@carsten-bach.de",
+                    "homepage": "https://carsten-bach.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "temp and local TEST for distributor-remote-quickedit",
+            "keywords": [
+                "wordpress",
+                "wordpress-muplugin"
+            ],
+            "time": "2023-02-02T15:07:15+00:00"
         },
         {
             "name": "composer/installers",
@@ -776,6 +810,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "carstingaxion/distributor-remote-quickedit": 20,
         "devgeniem/shadow-taxonomy": 20
     },
     "prefer-stable": false,
