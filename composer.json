@@ -42,10 +42,6 @@
         },
         {
             "type": "git",
-            "url": "https://github.com/carstingaxion/distributor-remote-quickedit"
-        },
-        {
-            "type": "git",
             "url": "https://github.com/carstingaxion/shadow-taxonomy"
         },
         {
@@ -65,10 +61,10 @@
         "php": ">=7.1",
         "figuren-theater/ft-network-sourcelinks": "*",
         "10up/distributor": "^1.9",
-        "carstingaxion/distributor-remote-quickedit": "dev-temp-composer",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5",
+        "wpackagist-plugin/distributor-remote-quickedit":"*",
         "wpackagist-plugin/term-management-tools": "^2.0"
     },
     "extra": {
@@ -76,10 +72,10 @@
             "install-overrides": [
                 "figuren-theater/ft-network-sourcelinks",
                 "10up/distributor",
-                "carstingaxion/distributor-remote-quickedit",
                 "devgeniem/shadow-taxonomy",
                 "humanmade/utility-taxonomy",
                 "johnbillion/extended-cpts",
+                "wpackagist-plugin/distributor-remote-quickedit",
                 "wpackagist-plugin/term-management-tools"
             ]
         }

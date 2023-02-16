@@ -18,7 +18,7 @@ use function is_network_admin;
 use function is_user_admin;
 
 const BASENAME   = 'distributor-remote-quickedit/distributor-remote-quickedit.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/carstingaxion/' . BASENAME;
+const PLUGINPATH = FT_VENDOR_DIR . '/wpackagist-plugin/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
