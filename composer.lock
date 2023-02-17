@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75008b94d422f8f6406d3873b3586454",
+    "content-hash": "c609a064b69f7296f30a8a1f52f39e2e",
     "packages": [
         {
             "name": "10up/distributor",
@@ -56,40 +56,6 @@
             "description": "Distributor is a WordPress plugin that makes it easy to distribute and reuse content across your websites — whether in a single multisite or across the web.",
             "homepage": "https://distributorplugin.com/",
             "time": "2022-12-15T23:26:53+00:00"
-        },
-        {
-            "name": "carstingaxion/distributor-remote-quickedit",
-            "version": "dev-temp-composer",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/carstingaxion/distributor-remote-quickedit",
-                "reference": "f144a6bb7fac156c633d1e26356f309e7a329520"
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "type": "wordpress-plugin",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "figuren.theater",
-                    "email": "info@figuren.theater"
-                },
-                {
-                    "name": "Carsten Bach",
-                    "email": "mail@carsten-bach.de",
-                    "homepage": "https://carsten-bach.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "temp and local TEST for distributor-remote-quickedit",
-            "keywords": [
-                "wordpress",
-                "wordpress-muplugin"
-            ],
-            "time": "2023-02-02T15:07:15+00:00"
         },
         {
             "name": "composer/installers",
@@ -280,15 +246,18 @@
         },
         {
             "name": "figuren-theater/ft-network-sourcelinks",
-            "version": "1.0.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/figuren-theater/ft-network-sourcelinks",
-                "reference": "7902e175598f78c6a7e60a266847d27a847de5b8"
+                "reference": "7ff9b3a6ac41dacd4ac50c874a53af51ec2a527e"
             },
             "require": {
                 "johnpbloch/wordpress": "^6.0",
                 "php": ">=7.1"
+            },
+            "suggest": {
+                "figuren-theater/ft-onboarding": "Contains the mandatory filter, which will help to create 'individual default' links during site-installation."
             },
             "type": "wordpress-plugin",
             "license": [
@@ -318,7 +287,7 @@
                 "issues": "https://github.com/figuren-theater/ft-network-sourcelinks/issues",
                 "source": "https://github.com/figuren-theater/ft-network-sourcelinks"
             },
-            "time": "2023-01-08T22:57:39+00:00"
+            "time": "2023-02-17T09:26:01+00:00"
         },
         {
             "name": "georgestephanis/application-passwords",
@@ -738,6 +707,24 @@
             "time": "2020-04-16T21:44:57+00:00"
         },
         {
+            "name": "wpackagist-plugin/distributor-remote-quickedit",
+            "version": "0.2.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/distributor-remote-quickedit/",
+                "reference": "tags/0.2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/distributor-remote-quickedit.0.2.2.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/distributor-remote-quickedit/"
+        },
+        {
             "name": "wpackagist-plugin/term-management-tools",
             "version": "2.0.1",
             "source": {
@@ -810,7 +797,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "carstingaxion/distributor-remote-quickedit": 20,
         "devgeniem/shadow-taxonomy": 20
     },
     "prefer-stable": false,
