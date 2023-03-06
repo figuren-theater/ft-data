@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9059bd5a7457dac751377ae093447e50",
+    "content-hash": "c609a064b69f7296f30a8a1f52f39e2e",
     "packages": [
         {
             "name": "10up/distributor",
@@ -246,15 +246,18 @@
         },
         {
             "name": "figuren-theater/ft-network-sourcelinks",
-            "version": "1.0.0",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/figuren-theater/ft-network-sourcelinks",
-                "reference": "7902e175598f78c6a7e60a266847d27a847de5b8"
+                "reference": "7ff9b3a6ac41dacd4ac50c874a53af51ec2a527e"
             },
             "require": {
                 "johnpbloch/wordpress": "^6.0",
                 "php": ">=7.1"
+            },
+            "suggest": {
+                "figuren-theater/ft-onboarding": "Contains the mandatory filter, which will help to create 'individual default' links during site-installation."
             },
             "type": "wordpress-plugin",
             "license": [
@@ -284,7 +287,7 @@
                 "issues": "https://github.com/figuren-theater/ft-network-sourcelinks/issues",
                 "source": "https://github.com/figuren-theater/ft-network-sourcelinks"
             },
-            "time": "2023-01-08T22:57:39+00:00"
+            "time": "2023-02-17T09:26:01+00:00"
         },
         {
             "name": "georgestephanis/application-passwords",
@@ -702,6 +705,24 @@
                 "source": "https://github.com/johnpbloch/wordpress-core-installer/tree/master"
             },
             "time": "2020-04-16T21:44:57+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/distributor-remote-quickedit",
+            "version": "0.2.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/distributor-remote-quickedit/",
+                "reference": "tags/0.2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/distributor-remote-quickedit.0.2.2.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/distributor-remote-quickedit/"
         },
         {
             "name": "wpackagist-plugin/term-management-tools",

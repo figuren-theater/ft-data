@@ -10,6 +10,8 @@ namespace Figuren_Theater\Data\Term_Management_Tools;
 use FT_VENDOR_DIR;
 
 use function add_action;
+use function is_admin;
+use function wp_doing_cron;
 
 const BASENAME   = 'term-management-tools/term-management-tools.php';
 const PLUGINPATH = FT_VENDOR_DIR . '/wpackagist-plugin/' . BASENAME;
@@ -23,6 +25,9 @@ function bootstrap() {
 }
 
 function load_plugin() {
+
+	if ( ! is_admin() || wp_doing_cron() )
+		return;
 
 	require_once PLUGINPATH;
 }
