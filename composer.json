@@ -26,6 +26,8 @@
         "files": [
             "inc/distributor/namespace.php",
             "inc/distributor-remote-quickedit/namespace.php",
+            "inc/feed-pull/auto-setup.php",
+            "inc/feed-pull/import.php",
             "inc/feed-pull/namespace.php",
             "inc/ft-network-sourcelinks/namespace.php",
             "inc/term-management-tools/namespace.php",
