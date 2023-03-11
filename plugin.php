@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     figuren.theater | Data
  * Plugin URI:      https://github.com/figuren-theater/ft-data
- * Description:     Data structures, posttypes and taxonomies for a WordPress Multisite like figuren.theater
+ * Description:     Data structures, posttypes & taxonomies together with the tools to handle this data for a WordPress multisite network like figuren.theater
  * Author:          figuren.theater
  * Author URI:      https://figuren.theater
  * Text Domain:     figurentheater
