@@ -42,6 +42,7 @@ function bootstrap() {
 	Distributor_Remote_Quickedit\bootstrap();
 	Feed_Pull\bootstrap();
 	FT_Network_Sourcelinks\bootstrap();
+	Rss_Bridge\bootstrap();
 	Term_Management_Tools\bootstrap();
 	Utility_Taxonomy\bootstrap();
 }

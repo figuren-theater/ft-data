@@ -29,6 +29,7 @@
             "inc/feed-pull/auto-setup.php",
             "inc/feed-pull/import.php",
             "inc/feed-pull/namespace.php",
+            "inc/rss-bridge/namespace.php",
             "inc/ft-network-sourcelinks/namespace.php",
             "inc/term-management-tools/namespace.php",
             "inc/utility-taxonomy/namespace.php",
@@ -67,6 +68,8 @@
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5",
+        "koodimonni/composer-dropin-installer": "^1.4",
+        "rss-bridge/rss-bridge": "2022-06-14",
         "wpackagist-plugin/distributor-remote-quickedit":"*",
         "wpackagist-plugin/term-management-tools": "^2.0"
     },
@@ -81,6 +84,11 @@
                 "wpackagist-plugin/distributor-remote-quickedit",
                 "wpackagist-plugin/term-management-tools"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
         }
     }
 }
