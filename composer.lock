@@ -8,11 +8,11 @@
     "packages": [
         {
             "name": "10up/distributor",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/distributor",
-                "reference": "c6ab9f9ff1d93e2a632cc8a61c7b25cd6b0b8c6c"
+                "reference": "7e1dd94df9d1aa36755d4c10b9535cc790c1b33a"
             },
             "require": {
                 "ext-json": "*",
@@ -55,7 +55,7 @@
             ],
             "description": "Distributor is a WordPress plugin that makes it easy to distribute and reuse content across your websites — whether in a single multisite or across the web.",
             "homepage": "https://distributorplugin.com/",
-            "time": "2022-12-15T23:26:53+00:00"
+            "time": "2023-03-15T22:37:44+00:00"
         },
         {
             "name": "composer/installers",
