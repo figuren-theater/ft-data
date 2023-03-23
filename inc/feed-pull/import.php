@@ -17,6 +17,7 @@ use function get_post;
 use function get_post_type;
 use function sanitize_text_field;
 use function sanitize_textarea_field;
+use function wp_parse_args;
 use function wp_slash;
 
 function bootstrap_import() {
@@ -296,15 +297,22 @@ function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $sourc
  */
 function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : array {
 	
-	// Set some defaults
-	$new_post_args['comment_status'] = 'closed';
-	$new_post_args['ping_status']    = 'closed';
+	$import_args = get_import_args_from_source( $source_feed_id );
 
-	// set author to machine user, if non set
-	$new_post_args['post_author'] ?: Users\ft_bot::id();
+	// Set some defaults
+	$import_args['comment_status'] = 'closed';
+	$import_args['ping_status']    = 'closed';
 
 	// TODO
 	// add (yet non-existent) 'imported_from' taxonomy-term
+
+	// 
+	// $new_post_args['post_status'] = 
+
+	// 
+
+	// set author to machine user, if non set
+	$new_post_args['post_author'] ?: Users\ft_bot::id();
 
 	// strip (maybe) filled excerpt
 	// if we can auto-generate it 
@@ -312,5 +320,18 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 		unset($new_post_args['post_excerpt']);
 	}
 
+	$new_post_args = wp_parse_args( $import_args, $new_post_args )
+
 	return wp_slash( $new_post_args );
+}
+
+
+function get_import_args_from_source( int $source_feed_id ) : array {
+	
+
+	$args = [
+		'post_status' => 
+	];
+
+	return $args;
 }
