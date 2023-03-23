@@ -42,7 +42,15 @@ This is the long desc
         "type": "git",
         "url": "https://github.com/figuren-theater/ft-data"
     }
-]
+],
+"extra": {
+    "dropin-paths": {
+        "htdocs/vendor/rss-bridge/rss-bridge": [
+            "package:figuren-theater/ft-data:templates/htdocs/vendor/rss-bridge/rss-bridge/whitelist.txt",
+            "package:figuren-theater/ft-data:templates/htdocs/vendor/rss-bridge/rss-bridge/config.ini.php"
+        ]
+    }
+}
 ```
 
 2. Install via command line
@@ -74,6 +82,7 @@ Thoose are completely managed by code and lack of their typical UI.
 * [figuren-theater/ft-network-sourcelinks](https://github.com/figuren-theater/ft-network-sourcelinks)
     Manage external Links as 'other' personal profiles or external sources. Handles syncing content from thoose sites, (NOT YET: using RSS-Bridge, friends,) and the old native WordPress Link-Manager a little modified.
 
+* [RSS-Bridge](https://rss-bridge.github.io/rss-bridge/)
 
 ## Built with & uses
 

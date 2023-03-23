@@ -247,6 +247,7 @@ class Detector
 	}
 
 
+
 	public static function has_importable_endpoint( string $new_url ) : bool {
 
 		$found = false;
