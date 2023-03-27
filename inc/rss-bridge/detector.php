@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Figuren_Theater Data Rss_Bridge.
  *
@@ -7,35 +8,163 @@
 
 namespace Figuren_Theater\Data\Rss_Bridge;
 
-use WP_Post;
+use function add_query_arg;
+use function esc_url_raw;
+use function is_wp_error;
+use function plugins_url;
+use function set_url_scheme;
+use function wp_parse_args;
+use function wp_remote_get;
+use function wp_remote_retrieve_response_code;
 
-use function do_action;
-use function esc_url;
-use function untrailingslashit;
-use function wp_set_object_terms;
+const CustomDomainRegex = '/^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/i';
+
 
 /**
- * Bootstrap module, when enabled.
-
-function bootstrap_detector() {
-
-	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin', 9 );
-}
-
-function load_plugin() {
-
-	// Do only load in "normal" admin view
-	// and public views
-	// Not for:
-	// - network-admin views
-	// - user-admin views
-	#if ( is_network_admin() || is_user_admin() )
-	#	return;
-	
-	require_once PLUGINPATH;
-}
+ * Extracts the custom domain from a given URL.
+ *
+ * @param string $url The URL to extract the custom domain from.
+ *
+ * @return string|null The extracted custom domain, or null if not found.
  */
+function get_custom_domain( string $url ): ?string {
+    // Get the host name from the URL.
+    $parts = parse_url($url);
+    if (!isset($parts['host'])) {
+        return null;// Invalid URL, no host found.
+    }
+    $host = $parts['host'];
 
+    // Check if the custom domain is valid.
+    $matches = [];
+    # $customDomainRegex = '/^[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/i';
+    $customDomainRegex = CustomDomainRegex;
+    preg_match($customDomainRegex, $host, $matches);
+
+    return isset($matches[0]) ? $matches[0] : null;
+}
+
+
+function get_bridge_for_domain(string $domain): ?array {
+    $bridges = get_bridges();
+    foreach ($bridges as $bridge) {
+
+        if (preg_match($bridge['pattern'], $domain, $matches)) {
+            return $bridge;
+        }
+    }
+    return null;
+}
+
+function get_bridge_for_platform(string $platform): ?array {
+    $bridges = get_bridges();
+    if (isset($bridges[$platform])) {
+    	return $bridges[$platform];
+    }
+    return null;
+}
+
+
+/**
+ * Generate an RSS Bridge URL from the given bridge name and parameters.
+ *
+ * @param  string $bridge The name of the bridge to use.
+ * @param  array  $params The parameters for the bridge.
+ * 
+ * @return string The generated RSS Bridge URL.
+ * 
+ * @example https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=WordPressBridge&url=https%3A%2F%2Fjuliaraab.de%2F&limit=3&content-selector=&format=Atom
+ */
+function generate_rss_bridge_url_from_params( string $bridge, array $params ) : string {
+    // 
+    // $rss_bridge_base_url = get_site_url( null, '/content/mu-plugins/rss-bridge-master/index.php' );
+    $rss_bridge_base_url = plugins_url( 'index.php', dirname( PLUGINPATH ) );
+    
+
+    // $query_params = http_build_query( [ 'format' => 'Atom', 'bridge' => $bridge ] + $params );
+    // return 'https://..../display/?' . $query_params;
+
+    // Build the query string parameters for the RSS Bridge API URL.
+    $params = wp_parse_args( 
+        $params,
+        [
+            'action' => 'display',
+            'format' => 'Atom',
+            'bridge' => $bridge
+        ]
+    );
+
+    // Combine the query string parameters with the base URL.
+    return esc_url_raw( 
+        add_query_arg( 
+            $params, 
+            $rss_bridge_base_url
+        )
+    );
+}
+
+function get_bridge_url( array $bridge, string $url, ?string $platform = null ) : ?string {
+	if ( ! isset($bridge['bridge_url_data'])) {
+		return null;
+	}
+    // Call the bridge to get the feed URL
+    $bridge_url_data = call_user_func($bridge['bridge_url_data'], $bridge, $url, $platform );
+
+    // the bridged feed
+    return generate_rss_bridge_url_from_params( $bridge['bridge_name'], $bridge_url_data );	
+}
+
+
+function get_custom_feed_url( array $bridge, string $url, ?string $platform = null ) : string {
+
+    if ($platform) {
+    	$domain = get_custom_domain($url);
+    }
+    if (is_string($domain)) {
+    	$url_parts      = parse_url($url);
+    	$feed_url_parts = parse_url($bridge['feed_url']);
+
+    	// update the host with the custom domain-name
+    	$feed_url_parts['host'] = $url_parts['host'];
+
+    	// re-glue everything together
+    	$custom_feed_url = $feed_url_parts["scheme"]."://".$feed_url_parts["host"].$feed_url_parts['path'];
+
+    	// create a pseudo-bridge for the next run of get_feed_url()
+    	$bridge['feed_url'] = $custom_feed_url;
+    	$bridge['pattern']  = CustomDomainRegex;
+    }
+
+    return get_feed_url( $bridge, $url );
+
+}
+
+function get_feed_url( array $bridge, string $url ) : string {
+	if ( ! isset($bridge['feed_url_data'])) {
+		return '';
+	}
+
+    // Call the bridge to get the feed URL
+    $feed_url = call_user_func($bridge['feed_url_data'], $bridge['pattern'], $url );
+
+    // the normal feed 
+    return sprintf($bridge['feed_url'], $feed_url );
+}
+
+function is_feed_ok( string $url ) : bool {
+
+    $response = wp_remote_get( set_url_scheme( $url, 'https' ) );
+
+    if ( ! is_wp_error( $response ) ) {
+        $status = wp_remote_retrieve_response_code( $response );
+        // if ( 200 == $status || 301 == $status || 302 == $status ) {
+        if ( 200 == $status ) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 
 /**
@@ -46,242 +175,109 @@ function load_plugin() {
  * @param   string    $url              The websites source URL to get data from
  * @param   string    $suggested_bridge Suggested bridge given by the author during post_creation.
  * 
- * @return  array List of parameters for ft_generate_rss_bridge_url()
- *                'bridge' => Required. Name of the bridge to use, following the naming-conventions from rss-bridge
- *                '...'    => Required|Optional. Other parameters depend on the bridge, see definition for available options.
+ * @return  string URL to the feed
  */
-function ft_detect_rss_bridge( string $url='', string $suggested_bridge='' ) : array {
-    $bridge_info = [];
+function get_bridged_url(string $url, ?string $platform = null): ?string {
+    // Remove any trailing slashes from the URL
+    $url = rtrim($url, '/');
 
-    // defaults
-    $limit = 3;
-    $url   = rawurlencode( $url );
+    $bridge = false;
 
-    if ( // Bail, if no data to work with
-        ! is_string( $url ) ||
-        empty( $url ) ||
-        ! is_string( $suggested_bridge ) ||
-        empty( $suggested_bridge )
-    ) {
-        return $bridge_info;
+    // Extract the domain from the URL
+    if ($platform) {
+    	$bridge = get_bridge_for_platform($platform);
+    } 
+
+    // 
+    // Check if we have a bridge for the domain
+    // if no platform was given or
+    // even if a platform was set, but nothing was found
+    if (!$bridge) {
+    	$bridge = get_bridge_for_domain($url);
     }
 
-	// Does NOT work
-	// 
-	// Youtube
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.youtube.com/channel/UCpGlwdRlimIXuPMEg7mw5ew&format=html
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.youtube.com/@juliaraab4423&format=html
-	// 
-	// Flickr
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.flickr.com/photos/carstingaxion&format=html
-	// 
-	// Twitch
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.twitch.tv/ryanwelchercodes&format=html
-	// 
-	// 
-	// 
-	// Works very well
-	// 
-	// Yotube (17. Versuch)
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=YoutubeBridge&context=By+custom+name&custom=%40juliaraab4423&duration_min=&duration_max=&format=Html
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=YoutubeBridge&context=By+channel+id&c=UCpGlwdRlimIXuPMEg7mw5ew&duration_min=&duration_max=&format=Html
-	// 
-	// Flickr
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=FlickrBridge&context=By+username&u=carstingaxion&content=uploads&media=all&sort=date-posted-desc&format=Html
-	// 
-	// Twitch
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=TwitchBridge&channel=ryanwelchercodes&type=archive&format=Html
-	// 
-	// 
-	// Twitter
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=TwitterBridge&context=By+username&u=juliaraab&format=Html
-	// https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://twitter.com/juliaraab&format=html
-
-    $bridge = ($suggested_bridge)?: 'WordPressBridge';
-
-    switch ($bridge) {
-        case 'WordPressBridge':
-            $bridge_info = [
-                'limit'   => $limit,
-                'url'     => $url, // full url
-            ];
-            break;
-        
-    #    case 'YoutubeBridge':
-    #        $bridge_info = [
-    #            'duration_min' => 0,
-    #            'duration_max' => 240,
-    #            'u'            => $url,
-    #        ];
-    #        break;
-        
-        default:
-            # code...
-            break;
+    // try to find a bridge Adapter
+    if ($bridge) {
+	    $bridged_url = get_bridge_url( $bridge, $url, $platform );
+	    #if ($bridged_url) {
+	    #    // the bridged feed
+	    #    return $bridged_url;
+	    #}
     }
-    
-    $bridge_info['bridge'] = $bridge;
+	/* WORKING, used as fallback */
+    if ($bridge && !$bridged_url) {
+        // the normal feed 
+        $bridged_url = get_feed_url( $bridge, $url );
+    }
 
-    return $bridge_info;
+    // Make sure we have a valid response, 
+    // which means status codes 200, 301 or 302
+    if ( is_feed_ok( $bridged_url ) ) {
+        return $bridged_url;
+    }
+
+	return null;
 }
 
 
-
-
+##############################################################################
+########################## just for debugging ################################
+##############################################################################
 
 /*
-// DEBUG
-add_action( 
-    'sssadmin_menu',
-    function(){
-        \do_action( 'qm/debug', ft_generate_rss_bridge_url('https://juliaraab.test/feed') );
-    },
-    10,
-    1
-);
-*/
+echo '<pre>';
 
+echo "<br><br>";
+echo "<br><br>";
+$given_urls = [
+    ['https://scubulus.org','webflow'],
+    ['https://tata.live','blogspot'],
+    ['https://ololololololololol.com/','tumblr'],
+	['https://theaterpaedagpgik.leipzig','jimdo'],
+    ['https://mein.schickes.figuren.theater/','wordpress'],
+    ['https://ft123.wordpress.com/','wordpress'],
+    ['https://ft123.abc/','wordpress'],
+    ['https://ft123.xyz/abcdefghjik/','wordpress'],
+];
 
-/**
- * Detect connectable Rss-Bridges by a given URL
- */
-class Detector
-{
-
-	/**
-	 * The Class Object
-	 */
-	static private $instance = null;
-	
-	function __construct() {}
-
-
-	public static function get_importable_services() : array {
-		
-		return [
-			// Example
-			// do not add any protocoll
-			// 
-			// 'url-to-search.domain' => '%s/importable/endpoint/',
-			
-			// 
-			'.blogspot.com'  => '%s/feeds/posts/default',
-			
-			// !!
-			'.jimdo.com'     => '%s/rss/blog/',
-			'.jimdofree.com' => '%s/rss/blog/',
-			
-			// 
-			'.tumblr.com'    => '%s/rss',
-			
-			// 
-			'vimeo.com'      => '%s/videos/rss',
-			
-			// 
-			'wix.com'        => '%s/blog-feed.xml',
-			
-			// 
-			'wordpress.com'  => '%s/feed/',
-			
-			// 
-			'youtube.com'    => '%s',
-			
-			// 
-			// 'medium.com/example-site' => 'https://medium.com/feed/example-site',
-			// 
-			// 'twitter.com/example-site' => 'https://nitter.com/...???.../example-site/feed/',
-			// 
-			// 'flickr.com/example-site' => 'https://flickr.com/...???.../some-cryptic-flickr-id',
-
-
-			// NO WAY
-			// - other than a sarcastic blog post - 
-			// 
-			// facebook.com
-			// weebly.com
-
-		];
-
-	}
-
-	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
-		
-		// run only on the first run
-		if ( $update )
-			return;
-
-		// make sure we have anything to work with
-		if ( empty( $post->post_content ) )
-			return;
-
-		// make sure it is a well formed URL
-		$new_url = esc_url( 
-			$post->post_content,
-			[
-				'http',
-				'https'
-			],
-			'db'
-		);
-		if ( empty( $new_url ) )
-			return;
-
-		$new_url = untrailingslashit( $new_url );
-
-		// well prepared,
-		// let's go
-		// 
-		// hand the URL to our RSS-detective
-		if ( static::has_importable_endpoint( $new_url ) ){
-			// we found something ...
-		}
-		#	wp_set_object_terms( 
-		#		$post_ID,
-		#		[
-		#			'is-importable',
-		#		],
-		#		'link_category',
-		#		true
-		#	);
-
-	}
-
-
-
-	public static function has_importable_endpoint( string $new_url ) : bool {
-
-		$found = false;
-		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
-	
-			if ( $found )
-				return $found;
-
-			if ( false !== strpos( $new_url, $url_to_search ) ) {
-
-				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
-				$found = true;
-				do_action( 
-					__NAMESPACE__ . '\\found_importable_endpoint',
-					sprintf( $pattern, $new_url )
-				);
-			} 
-		}
-
-		if ( $found )
-			return $found;
-
-		do_action( 'qm/warning', '{new_url} kann nicht importiert werden.', [
-			'new_url' => $new_url,
-		] );
-
-		return $found;
-	}
-
-
-
-	public static function get_instance() {
-		if ( null === self::$instance )
-			self::$instance = new self;
-		return self::$instance;
-	}
+$output_urls = $given_urls; // this line just helps debugging
+foreach ($output_urls as $given_url) {
+    $rss_bridge_url = get_bridged_url($given_url[0], $given_url[1]);
+    // $rss_bridge_url = get_bridge_from_url($given_url);
+    echo "$given_url[0]\n";
+    echo "==> $rss_bridge_url\n\n\n";
 }
+
+
+echo "<br><br>";
+echo "<br><br>";
+$given_urls = [
+	'https://scubulus.webflow.com/',
+	'https://tata.blogspot.com/',
+	'https://ololololololololol.tumblr.com/',
+	'https://theaterpaedagpgik-leipzig.jimdo.com',
+	'https://ft123.wordpress.com/cat-or-tag-or-term/',
+    'https://www.facebook.com/figuren.theater.dach/',
+	'https://www.tiktok.com/@olaf_scholz',
+    'https://medium.com/@ololololololololol/',
+    'https://twitter.com/figuren_theater',
+    'https://twitter.com/OpenAI/status/1104858619893089282',
+    'https://www.youtube.com/channel/UCBR8-60-B28hp2BmDPdntcQ',
+    'https://www.youtube.com/@paulpanether',
+    'https://www.flickr.com/photos/127356892@N06/49741958331/in/album-72157713692908818/',
+];
+
+$output_urls = $given_urls; // this line just helps debugging
+foreach ($output_urls as $given_url) {
+    $rss_bridge_url = get_bridged_url($given_url);
+    // $rss_bridge_url = get_bridge_from_url($given_url);
+    echo "$given_url\n";
+    echo "==> $rss_bridge_url\n\n\n";
+}
+
+
+echo '</pre>';
+
+// var_dump(get_bridges());
+exit();
+*/

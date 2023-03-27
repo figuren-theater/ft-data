@@ -1,0 +1,144 @@
+<?php
+/**
+ * Figuren_Theater Data Rss_Bridge.
+ *
+ * @package figuren-theater/data/rss_bridge
+ */
+
+namespace Figuren_Theater\Data\Rss_Bridge;
+
+use WP_Post;
+
+use function do_action;
+use function esc_url;
+use function untrailingslashit;
+use function wp_set_object_terms;
+
+/**
+ * Bootstrap module, when enabled.
+
+function bootstrap_detector() {
+
+	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin', 9 );
+}
+
+function load_plugin() {
+
+	// Do only load in "normal" admin view
+	// and public views
+	// Not for:
+	// - network-admin views
+	// - user-admin views
+	#if ( is_network_admin() || is_user_admin() )
+	#	return;
+	
+	require_once PLUGINPATH;
+}
+ */
+
+
+
+
+
+
+/**
+ * Detect connectable Rss-Bridges by a given URL
+ */
+class Detector
+{
+
+	/**
+	 * The Class Object
+	 */
+	static private $instance = null;
+	
+	function __construct() {}
+
+
+	public static function get_importable_services() : array {
+		
+		return [		];
+
+	}
+
+	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
+		
+		// run only on the first run
+		if ( $update )
+			return;
+
+		// make sure we have anything to work with
+		if ( empty( $post->post_content ) )
+			return;
+
+		// make sure it is a well formed URL
+		$new_url = esc_url( 
+			$post->post_content,
+			[
+				'http',
+				'https'
+			],
+			'db'
+		);
+		if ( empty( $new_url ) )
+			return;
+
+		$new_url = untrailingslashit( $new_url );
+
+		// well prepared,
+		// let's go
+		// 
+		// hand the URL to our RSS-detective
+		if ( static::has_importable_endpoint( $new_url ) ){
+			// we found something ...
+		}
+		#	wp_set_object_terms( 
+		#		$post_ID,
+		#		[
+		#			'is-importable',
+		#		],
+		#		'link_category',
+		#		true
+		#	);
+
+	}
+
+
+
+	public static function has_importable_endpoint( string $new_url ) : bool {
+
+		$found = false;
+		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
+	
+			if ( $found )
+				return $found;
+
+			if ( false !== strpos( $new_url, $url_to_search ) ) {
+
+				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
+				$found = true;
+				do_action( 
+					__NAMESPACE__ . '\\found_importable_endpoint',
+					sprintf( $pattern, $new_url )
+				);
+			} 
+		}
+
+		if ( $found )
+			return $found;
+
+		do_action( 'qm/warning', '{new_url} kann nicht importiert werden.', [
+			'new_url' => $new_url,
+		] );
+
+		return $found;
+	}
+
+
+
+	public static function get_instance() {
+		if ( null === self::$instance )
+			self::$instance = new self;
+		return self::$instance;
+	}
+}

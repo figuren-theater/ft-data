@@ -29,6 +29,8 @@
             "inc/feed-pull/auto-setup.php",
             "inc/feed-pull/import.php",
             "inc/feed-pull/namespace.php",
+            "inc/rss-bridge/detector.php",
+            "inc/rss-bridge/bridges.php",
             "inc/rss-bridge/namespace.php",
             "inc/ft-network-sourcelinks/namespace.php",
             "inc/term-management-tools/namespace.php",
