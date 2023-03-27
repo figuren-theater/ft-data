@@ -1,4 +1,4 @@
-# feed-pull Integration
+# [feed-pull](https://github.com/carstingaxion/feed-pull)
 
 - Link Post (A): The custom post type for links.
 - Utility Taxonomy (B): The custom taxonomy for utilities.

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Figuren_Theater Data Feed_Pull.
  *
@@ -13,10 +14,11 @@
  * @package figuren-theater/data/feed_pull
  */
 
-
-
 namespace Figuren_Theater\Data\Feed_Pull;
 
+use Figuren_Theater\UtilityFeaturesRepo;
+
+use Figuren_Theater\Data\Rss_Bridge;
 use Figuren_Theater\Network\Features;
 use Figuren_Theater\Network\Post_Types;
 
@@ -25,26 +27,22 @@ use Figuren_Theater\Network\Post_Types;
 use function add_action;
 use function add_filter;
 use function get_post;
+use function get_post_meta;
 use function get_posts;
 use function get_term_by;
 use function has_term;
 use function is_wp_error;
 use function wp_delete_post;
 use function wp_insert_post;
+use function wp_slash;
 
 const LINK_PT      = Post_Types\Post_Type__ft_link::NAME;
 const UTILITY_TAX  = Features\UtilityFeaturesManager::TAX;
-const UTILITY_TERM = 'feedpull-import';
+const UTILITY_TERM = UtilityFeaturesRepo\UtilityFeature__ft_link__feedpull_import::SLUG, //'feedpull-import',;
 
 function bootstrap_auto_setup() {
 
 	add_action( 'admin_init', __NAMESPACE__ . '\\admin_init', 5 );
-
-	add_action(  
-		// 'Figuren_Theater\\Network\\Post_Types\\Post_Type__ft_link\\found_importable_endpoint',
-		'Figuren_Theater\\Data\\Rss_Bridge\\found_importable_endpoint',
-		__NAMESPACE__ . '\\save_importable_endpoint' );
-
 }
 
 function admin_init() {
@@ -55,18 +53,12 @@ function admin_init() {
 	// Hook into save_post to create/update feed post
 	// add_action( 'save_post_'.LINK_PT, __NAMESPACE__ . '\\create_feed_post', 10, 2 );
 
-	// Hook into wp_set_object_terms to add or delete feed post
-	add_filter( 'wp_set_object_terms', __NAMESPACE__ . '\\add_or_delete_feed_post', 10, 5 );
+	// Hook into set_object_terms to add or delete a feed post
+	add_action( 'set_object_terms', __NAMESPACE__ . '\\add_or_delete_feed_post', 10, 6 );
 
 	// Hook into wp_trash_post to delete feed post
 	// add_action( 'wp_trash_post', __NAMESPACE__ . '\\delete_feed_post_on_trash' );
 	add_action( 'before_delete_post', __NAMESPACE__ . '\\delete_feed_post_on_trash' );
-}
-
-function save_importable_endpoint( string $importable_endpoint ) : void {
-
-	// \do_action( 'qm/info', $importable_endpoint );
-	// error_log(var_export([__FILE__,'save_importable_endpoint', $importable_endpoint],true));
 }
 
 
@@ -75,26 +67,23 @@ function save_importable_endpoint( string $importable_endpoint ) : void {
  * when a link post with the "import" term 
  * is saved or updated.
  *
- * @param int     $post_id The ID of the post being saved or updated.
  * @param WP_Post $post    The post object being saved or updated.
  */
-function create_feed_post( int $post_id, WP_Post $post ) : void {
-	#//
-	#$import_term_id = get_import_term_id();
-    #
-    #// Check if the "import" term is assigned to the link post.
-    #if (!has_term( $import_term_id, UTILITY_TAX, $post_id)) {
-    #    return; // Early return if the "import" term is not assigned to the link post.
-    #}
-    
+function create_feed_post( WP_Post $post ) : void {
+
     // Bail if post type is not a Link
     if ( $post->post_type !== LINK_PT ) {
         return;
     }
 
+    // look for a platform suggestion
+    // which use user may have given during registration
+    // see: Figuren_Theater\src\FeaturesAssets\core-my-registration\wp_core.php
+    $suggestion = get_post_meta( $post->ID, '_ft_platform', true ) ?? null;
+
     // get bridged URL
     $fp_feed_url = esc_url(
-    	RssBridge\get_bridged_url( $post->post_content ),
+    	Rss_Bridge\get_bridged_url( $post->post_content, $suggestion ),
     	'https',
     	'db'
     );
@@ -104,12 +93,12 @@ function create_feed_post( int $post_id, WP_Post $post ) : void {
     	return;
     }
 
-    // Create the feed post with the link post as parent.
-    $feed_post_id = wp_insert_post(array(
+    // prepare the insert arguments
+    $insert_args = wp_slash( array(
         'post_author' => $post->post_author,
         'post_type'   => FEED_POSTTYPE,
         'post_title'  => 'Feed: ' . $post->post_content ),
-        'post_parent' => $post_id,
+        'post_parent' => $post->ID,
         'post_status' => 'publish',
 		
 		'menu_order'     => 0,
@@ -117,22 +106,25 @@ function create_feed_post( int $post_id, WP_Post $post ) : void {
 		'ping_status'    => 'closed',
 
         'meta_input'   => [
-        	'fp_feed_url' => $fp_feed_url,
-			// 'fp_guid' => ,    
+        	'fp_feed_url'    => $fp_feed_url,
+        	ADAPTER_POSTMETA => '' // TODO // array_key of one of the get_bridges() array
         ],
-        'taxonomies'  => [
+        'tax_input'  => [
         	UTILITY_TAX => [
-        		
+
         	],
         ],
     ));
+
+    // Create the feed post with the link post as parent.
+    $feed_post_id = wp_insert_post( $insert_args );
 
     if (is_wp_error($feed_post_id)) {
         // Log an error if the feed post could not be created.
         error_log(
         	sprintf(
         		'Error creating feed post for link post with ID %d: %s',
-        		$post_id,
+        		$post->ID,
         		$feed_post_id->get_error_message()
         	)
         );
@@ -141,54 +133,50 @@ function create_feed_post( int $post_id, WP_Post $post ) : void {
 
 /**
  * Delete feed post when the "import" term is removed from a link post.
+ * 
+ * Fires after an object's terms have been set.
  *
- * @param array  $terms      Array of term IDs.
- * @param array  $object_ids Array of object IDs.
+ * @param int    $object_id  Object ID.
+ * @param array  $terms      An array of object term IDs or slugs.
+ * @param array  $tt_ids     An array of term taxonomy IDs.
  * @param string $taxonomy   Taxonomy slug.
- * @param bool   $append     Whether to append terms to the object.
- * @param array  $old_terms  Array of term IDs before the update.
- *
- * @return array Array of term IDs.
+ * @param bool   $append     Whether to append new terms to the old terms.
+ * @param array  $old_tt_ids Old array of term taxonomy IDs.
  */
-function add_or_delete_feed_post( array $new_terms, array $object_ids, string $taxonomy, bool $append, array $old_terms ) : array {
+function add_or_delete_feed_post( int $object_id, array $terms, array $new_terms, string $taxonomy, bool $append, array $old_terms ) : void {
 	//
 	$import_term_id = get_import_term_id();
 
 	// Return early if not the utility taxonomy or not the 'import' term being added or removed.
 	if ( $taxonomy !== UTILITY_TAX || ! in_array( $import_term_id, $new_terms ) && ! in_array( $import_term_id, $old_terms ) ) {
-		return $new_terms;
+		return;
 	}
 
-	foreach ( $object_ids as $object_id ) {
-		$post = get_post( $object_id );
+	$post = get_post( $object_id );
 
-		// Return early if not a link post.
-		if ( $post->post_type !== LINK_PT ) {
-			continue;
-		}
-
-		// Add or remove feed posts 
-		// depending on 'import' term being 
-		// added or removed from Link posts.
-		// 
-		// Term is new and not yet assigned
-		if ( in_array( $import_term_id, $new_terms ) && ! in_array( $import_term_id, $old_terms ) ) {
-			//
-			$feed_post_id = create_feed_post( $object_id, $post );
-		
-		// Term is not assigned, but was previously
-		} elseif ( ! in_array( $import_term_id, $new_terms ) && in_array( $import_term_id, $old_terms ) ) {
-			//
-			$feed_post_id = get_feed_from_link( $object_id );
-			if ( $feed_post_id ) {
-			    // Delete without trash bin
-			    wp_delete_post( $feed_post_id, true );
-			}
-		}
-
+	// Return early if not a link post.
+	if ( ! is_a($post, 'WP_Post') || $post->post_type !== LINK_PT ) {
+		continue;
 	}
 
-	return $new_terms;
+	// Add or remove feed posts 
+	// depending on 'import' term being 
+	// added or removed from Link posts.
+	// 
+	// Term is new and not yet assigned
+	if ( in_array( $import_term_id, $new_terms ) && ! in_array( $import_term_id, $old_terms ) ) {
+		//
+		create_feed_post( $post );
+	
+	// Term is not assigned, but was previously
+	} elseif ( ! in_array( $import_term_id, $new_terms ) && in_array( $import_term_id, $old_terms ) ) {
+		//
+		$feed_post_id = get_feed_from_link( $object_id );
+		if ( $feed_post_id ) {
+		    // Delete without trash bin
+		    wp_delete_post( $feed_post_id, true );
+		}
+	}
 }
 
 /**
@@ -219,18 +207,7 @@ function get_feed_from_link( int $link_post_id ) : int {
 }
 
 function get_import_term_id() : int {
-	$term = get_term_by('name', UTILITY_TERM, UTILITY_TAX);
+	$term = get_term_by('slug', UTILITY_TERM, UTILITY_TAX);
     // Get the "import" term ID.
     return (is_wp_error( $term )) ? 0 : $term->term_id;
 }
-
-// ####
-// 
-/**
- * Saves a "feed-pull" source programmatically.
- *
- * @param string $feed_url The URL of the feed to import.
- * @param array $options An array of options to use when importing the feed.
- *
- * @return int|WP_Error The ID of the created post, or a WP_Error object if something goes wrong.
- */
