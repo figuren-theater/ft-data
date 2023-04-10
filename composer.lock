@@ -340,11 +340,11 @@
         },
         {
             "name": "humanmade/utility-taxonomy",
-            "version": "v1.4.2",
+            "version": "v1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/humanmade/hm-utility-taxonomy",
-                "reference": "1995d293f3c732f2e05101c7c53f5f3a9e710469"
+                "reference": "fbb2dfb188996920c01519a792731fd96414c315"
             },
             "require": {
                 "composer/installers": "^1.7"
@@ -368,7 +368,7 @@
                 }
             ],
             "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
-            "time": "2022-07-27T08:12:12+00:00"
+            "time": "2023-04-10T09:47:59+00:00"
         },
         {
             "name": "johnbillion/args",
