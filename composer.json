@@ -69,7 +69,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "figuren-theater/ft-network-sourcelinks": "*",
+        "figuren-theater/ft-network-sourcelinks": ">=0.7.0",
         "10up/distributor": "^1.9",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
