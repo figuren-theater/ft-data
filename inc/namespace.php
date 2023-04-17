@@ -16,8 +16,9 @@ use function Altis\register_module;
 function register() {
 
 	$default_settings = [
-		'enabled' => true, // needs to be set
+		'enabled'                      => true, // needs to be set
 		'distributor-remote-quickedit' => false,
+		'feed-pull'                    => false,
 	];
 	$options = [
 		'defaults' => $default_settings,
@@ -39,7 +40,9 @@ function bootstrap() {
 
 	Distributor\bootstrap();
 	Distributor_Remote_Quickedit\bootstrap();
+	Feed_Pull\bootstrap();
 	FT_Network_Sourcelinks\bootstrap();
+	Rss_Bridge\bootstrap();
 	Term_Management_Tools\bootstrap();
 	Utility_Taxonomy\bootstrap();
 }
