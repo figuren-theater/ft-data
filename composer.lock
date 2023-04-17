@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c609a064b69f7296f30a8a1f52f39e2e",
+    "content-hash": "58d3648d07785fee9c93c9be7f23fa3a",
     "packages": [
         {
             "name": "10up/distributor",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/distributor",
-                "reference": "c6ab9f9ff1d93e2a632cc8a61c7b25cd6b0b8c6c"
+                "reference": "7e1dd94df9d1aa36755d4c10b9535cc790c1b33a"
             },
             "require": {
                 "ext-json": "*",
@@ -55,7 +55,7 @@
             ],
             "description": "Distributor is a WordPress plugin that makes it easy to distribute and reuse content across your websites — whether in a single multisite or across the web.",
             "homepage": "https://distributorplugin.com/",
-            "time": "2022-12-15T23:26:53+00:00"
+            "time": "2023-03-15T22:37:44+00:00"
         },
         {
             "name": "composer/installers",
@@ -246,11 +246,11 @@
         },
         {
             "name": "figuren-theater/ft-network-sourcelinks",
-            "version": "0.5.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/figuren-theater/ft-network-sourcelinks",
-                "reference": "7ff9b3a6ac41dacd4ac50c874a53af51ec2a527e"
+                "reference": "592faea7b592ee72a3495ea64aaa9f69d47253c8"
             },
             "require": {
                 "johnpbloch/wordpress": "^6.0",
@@ -287,7 +287,7 @@
                 "issues": "https://github.com/figuren-theater/ft-network-sourcelinks/issues",
                 "source": "https://github.com/figuren-theater/ft-network-sourcelinks"
             },
-            "time": "2023-02-17T09:26:01+00:00"
+            "time": "2023-04-17T19:42:43+00:00"
         },
         {
             "name": "georgestephanis/application-passwords",
@@ -340,11 +340,11 @@
         },
         {
             "name": "humanmade/utility-taxonomy",
-            "version": "v1.4.2",
+            "version": "v1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/humanmade/hm-utility-taxonomy",
-                "reference": "1995d293f3c732f2e05101c7c53f5f3a9e710469"
+                "reference": "fbb2dfb188996920c01519a792731fd96414c315"
             },
             "require": {
                 "composer/installers": "^1.7"
@@ -368,20 +368,20 @@
                 }
             ],
             "description": "A hidden taxonomy, used for filtering of posts/pages etc. in a way that is more performant than using the likes of post meta.",
-            "time": "2022-07-27T08:12:12+00:00"
+            "time": "2023-04-10T09:47:59+00:00"
         },
         {
             "name": "johnbillion/args",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnbillion/args.git",
-                "reference": "0a94706015471d72d6c227ff494a002a6275b28b"
+                "reference": "0bb94c0ef52fcd323714b7f0ce03ac4f6cedec27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnbillion/args/zipball/0a94706015471d72d6c227ff494a002a6275b28b",
-                "reference": "0a94706015471d72d6c227ff494a002a6275b28b",
+                "url": "https://api.github.com/repos/johnbillion/args/zipball/0bb94c0ef52fcd323714b7f0ce03ac4f6cedec27",
+                "reference": "0bb94c0ef52fcd323714b7f0ce03ac4f6cedec27",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +398,7 @@
                 "phpstan/phpstan-strict-rules": "^1.1",
                 "phpunit/phpunit": "^9.0",
                 "roots/wordpress-core-installer": "^1.0.0",
-                "roots/wordpress-full": "~6.1.0"
+                "roots/wordpress-full": "~6.2.0"
             },
             "type": "library",
             "extra": {
@@ -472,7 +472,7 @@
             "description": "I don't want to get into an argument about this.",
             "support": {
                 "issues": "https://github.com/johnbillion/args/issues",
-                "source": "https://github.com/johnbillion/args/tree/1.6.0"
+                "source": "https://github.com/johnbillion/args/tree/1.7.0"
             },
             "funding": [
                 {
@@ -480,7 +480,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-11-10T14:09:31+00:00"
+            "time": "2023-03-29T21:14:43+00:00"
         },
         {
             "name": "johnbillion/extended-cpts",
@@ -560,20 +560,20 @@
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "6.1.1",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8"
+                "reference": "de3b59e7e724bdc6c334f93ddbf2f9e06a92267b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8",
-                "reference": "d9ee7d6193781c9ee6288be6ca5681ee0c3f85b8",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/de3b59e7e724bdc6c334f93ddbf2f9e06a92267b",
+                "reference": "de3b59e7e724bdc6c334f93ddbf2f9e06a92267b",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "6.1.1",
+                "johnpbloch/wordpress-core": "6.2.0",
                 "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
                 "php": ">=5.6.20"
             },
@@ -602,20 +602,20 @@
                 "issues": "https://core.trac.wordpress.org/",
                 "source": "https://core.trac.wordpress.org/browser"
             },
-            "time": "2022-11-15T19:12:03+00:00"
+            "time": "2023-03-30T04:14:55+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "6.1.1",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "c9688597721b8579f3c29028e572a7b9753db893"
+                "reference": "cec139b6b71913343b68fbf043c468407a921225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/c9688597721b8579f3c29028e572a7b9753db893",
-                "reference": "c9688597721b8579f3c29028e572a7b9753db893",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/cec139b6b71913343b68fbf043c468407a921225",
+                "reference": "cec139b6b71913343b68fbf043c468407a921225",
                 "shasum": ""
             },
             "require": {
@@ -623,7 +623,7 @@
                 "php": ">=5.6.20"
             },
             "provide": {
-                "wordpress/core-implementation": "6.1.1"
+                "wordpress/core-implementation": "6.2.0"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -650,7 +650,7 @@
                 "source": "https://core.trac.wordpress.org/browser",
                 "wiki": "https://codex.wordpress.org/"
             },
-            "time": "2022-11-15T19:11:58+00:00"
+            "time": "2023-03-30T04:14:50+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -705,6 +705,124 @@
                 "source": "https://github.com/johnpbloch/wordpress-core-installer/tree/master"
             },
             "time": "2020-04-16T21:44:57+00:00"
+        },
+        {
+            "name": "koodimonni/composer-dropin-installer",
+            "version": "1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Koodimonni/Composer-Dropin-Installer.git",
+                "reference": "9596ef8f50cbba2cdc707ca3b1f5e4a0e9fa7e7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Koodimonni/Composer-Dropin-Installer/zipball/9596ef8f50cbba2cdc707ca3b1f5e4a0e9fa7e7e",
+                "reference": "9596ef8f50cbba2cdc707ca3b1f5e4a0e9fa7e7e",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 | ^2.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Koodimonni\\Composer\\Dropin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Koodimonni\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Onni Hakala",
+                    "email": "onni@keksi.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Install packages or a few files from packages into custom paths without overwriting existing stuff.",
+            "support": {
+                "issues": "https://github.com/Koodimonni/Composer-Dropin-Installer/issues",
+                "source": "https://github.com/Koodimonni/Composer-Dropin-Installer/tree/1.4"
+            },
+            "time": "2022-02-02T11:42:57+00:00"
+        },
+        {
+            "name": "rss-bridge/rss-bridge",
+            "version": "2022-06-14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RSS-Bridge/rss-bridge.git",
+                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RSS-Bridge/rss-bridge/zipball/9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
+                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ext-simplexml": "*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "suggest": {
+                "ext-dom": "Allows to use some bridges based on XPath expressions",
+                "ext-memcached": "Allows to use memcached as cache type",
+                "ext-sqlite3": "Allows to use an SQLite database for caching"
+            },
+            "type": "project",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "UNLICENSE"
+            ],
+            "description": "RSS-Bridge is a PHP project capable of generating RSS and Atom feeds for websites that don't have one. It can be used on webservers or as a stand-alone application in CLI mode.",
+            "homepage": "https://github.com/rss-bridge/rss-bridge/",
+            "keywords": [
+                "Bridge",
+                "atom",
+                "cli",
+                "feed",
+                "html",
+                "json",
+                "php",
+                "rss",
+                "rss-bridge"
+            ],
+            "support": {
+                "docs": "https://rss-bridge.github.io/rss-bridge/",
+                "issues": "https://github.com/rss-bridge/rss-bridge/issues/",
+                "rss": "https://github.com/RSS-Bridge/rss-bridge/commits/master.atom",
+                "source": "https://github.com/rss-bridge/rss-bridge/"
+            },
+            "time": "2022-06-14T13:47:12+00:00"
+        },
+        {
+            "name": "tlovett1/feed-pull",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carstingaxion/feed-pull",
+                "reference": "8796b2b2a4fa11870d301e059508a23b083f8b43"
+            },
+            "default-branch": true,
+            "type": "wordpress-plugin",
+            "time": "2023-03-25T00:01:20+00:00"
         },
         {
             "name": "wpackagist-plugin/distributor-remote-quickedit",
@@ -797,7 +915,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "devgeniem/shadow-taxonomy": 20
+        "devgeniem/shadow-taxonomy": 20,
+        "tlovett1/feed-pull": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
