@@ -60,6 +60,10 @@
         },
         {
             "type": "git",
+            "url": "https://github.com/figuren-theater/ft-options"
+        },
+        {
+            "type": "git",
             "url": "https://github.com/humanmade/hm-utility-taxonomy"
         },
         {
@@ -69,12 +73,12 @@
     ],
     "require": {
         "php": ">=7.1",
+        "figuren-theater/ft-options": "^1",
         "figuren-theater/ft-network-sourcelinks": ">=0.7.0",
         "10up/distributor": "^1.9",
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5",
-        "koodimonni/composer-dropin-installer": "^1.4",
         "rss-bridge/rss-bridge": "2022-06-14",
         "tlovett1/feed-pull": "dev-master",
         "wpackagist-plugin/distributor-remote-quickedit":"*",
@@ -92,11 +96,6 @@
                 "wpackagist-plugin/distributor-remote-quickedit",
                 "wpackagist-plugin/term-management-tools"
             ]
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true
         }
     }
 }
