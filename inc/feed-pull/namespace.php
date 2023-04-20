@@ -29,7 +29,8 @@ use function remove_meta_box;
 use function wp_doing_ajax;
 use function wp_doing_cron;
 
-use FP_OPTION_NAME;
+// use FP_OPTION_NAME;
+const FP_OPTION_NAME = 'fp_feed_pull';
 
 const BASENAME   = 'feed-pull/feed-pull.php';
 const PLUGINPATH = FT_VENDOR_DIR . '/carstingaxion/' . BASENAME;
@@ -118,7 +119,7 @@ function register_post_type_args( array $args ) : array {
 	$cuc = current_user_can( 'manage_sites' );
 
 	$args['public']        = false; // WHY is this 'true' by default?
-	$args['supports']      = array( 'title', 'post-formats' )
+	$args['supports']      = array( 'title', 'post-formats' );
 
 	$args['show_ui']       = $cuc;
 	$args['show_in_menu']  = $cuc;
@@ -127,7 +128,7 @@ function register_post_type_args( array $args ) : array {
 	$args['menu_position'] = 100;
 
 	$args['taxonomies']    = $args['taxonomies'] ?? [];
-	$args['taxonomies'][]  = Features\UtilityFeaturesManager::TAX,
+	$args['taxonomies'][]  = Features\UtilityFeaturesManager::TAX;
 
 	return $args;
 }
