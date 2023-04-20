@@ -348,7 +348,7 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 		unset($new_post_args['post_excerpt']);
 	}
 
-	$new_post_args = wp_parse_args( $import_args, $new_post_args )
+	$new_post_args = wp_parse_args( $import_args, $new_post_args );
 
 	return wp_slash( $new_post_args );
 }

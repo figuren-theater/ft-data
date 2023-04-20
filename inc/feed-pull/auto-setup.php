@@ -36,9 +36,12 @@ use function wp_delete_post;
 use function wp_insert_post;
 use function wp_slash;
 
-const LINK_PT      = Post_Types\Post_Type__ft_link::NAME;
-const UTILITY_TAX  = Features\UtilityFeaturesManager::TAX;
-const UTILITY_TERM = UtilityFeaturesRepo\UtilityFeature__ft_link__feedpull_import::SLUG, //'feedpull-import',;
+// const LINK_PT      = Post_Types\Post_Type__ft_link::NAME;
+const LINK_PT      = 'ft_link';
+// const UTILITY_TAX  = Features\UtilityFeaturesManager::TAX;
+const UTILITY_TAX  = 'hm-utility';
+// const UTILITY_TERM = UtilityFeaturesRepo\UtilityFeature__ft_link__feedpull_import::SLUG; //'feedpull-import',;
+const UTILITY_TERM = 'feedpull-import';
 
 function bootstrap_auto_setup() {
 
@@ -97,7 +100,7 @@ function create_feed_post( WP_Post $post ) : void {
     $insert_args = wp_slash( array(
         'post_author' => $post->post_author,
         'post_type'   => FEED_POSTTYPE,
-        'post_title'  => 'Feed: ' . $post->post_content ),
+        'post_title'  => 'Feed: ' . $post->post_content,
         'post_parent' => $post->ID,
         'post_status' => 'publish',
 		
@@ -156,7 +159,7 @@ function add_or_delete_feed_post( int $object_id, array $terms, array $new_terms
 
 	// Return early if not a link post.
 	if ( ! is_a($post, 'WP_Post') || $post->post_type !== LINK_PT ) {
-		continue;
+		return;
 	}
 
 	// Add or remove feed posts 
