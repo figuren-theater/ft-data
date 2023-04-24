@@ -79,7 +79,7 @@
         "devgeniem/shadow-taxonomy": "dev-master",
         "humanmade/utility-taxonomy": "^1.4",
         "johnbillion/extended-cpts": "^5",
-        "rss-bridge/rss-bridge": "2022-06-14",
+        "rss-bridge/rss-bridge": "2023-03-22-06-14",
         "tlovett1/feed-pull": "dev-master",
         "wpackagist-plugin/distributor-remote-quickedit":"*",
         "wpackagist-plugin/term-management-tools": "^2.0"
