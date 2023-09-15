@@ -1,10 +1,16 @@
 {
     "name": "figuren-theater/ft-data",
     "description": "Data structures, posttypes & taxonomies together with the tools to handle this data for a WordPress multisite network like figuren.theater",
-    "homepage": "https://websites.fuer.figuren.theater",
-    "type": "wordpress-muplugin",
-    "keywords": ["wordpress", "data", "posttypes", "taxonomies", "syndication", "rss"],
     "license": "GPL-3.0-or-later",
+    "type": "wordpress-muplugin",
+    "keywords": [
+        "wordpress",
+        "data",
+        "posttypes",
+        "taxonomies",
+        "syndication",
+        "rss"
+    ],
     "authors": [
         {
             "name": "figuren.theater",
@@ -17,29 +23,27 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://websites.fuer.figuren.theater",
     "support": {
         "email": "info@figuren.theater",
         "issues": "https://github.com/figuren-theater/ft-data/issues",
         "source": "https://github.com/figuren-theater/ft-data"
     },
-    "autoload": {
-        "files": [
-            "inc/distributor/namespace.php",
-            "inc/distributor-remote-quickedit/namespace.php",
-            "inc/feed-pull/auto-setup.php",
-            "inc/feed-pull/import.php",
-            "inc/feed-pull/namespace.php",
-            "inc/rss-bridge/detector.php",
-            "inc/rss-bridge/bridges.php",
-            "inc/rss-bridge/namespace.php",
-            "inc/ft-network-sourcelinks/namespace.php",
-            "inc/term-management-tools/namespace.php",
-            "inc/utility-taxonomy/namespace.php",
-            "inc/namespace.php"
-        ],
-        "classmap": [
-            "inc/"
-        ]
+    "require": {
+        "php": ">=7.1",
+        "10up/distributor": "^1.9",
+        "devgeniem/shadow-taxonomy": "dev-master",
+        "figuren-theater/ft-network-sourcelinks": "^0.9",
+        "figuren-theater/ft-options": "^1",
+        "humanmade/utility-taxonomy": "^1.4",
+        "johnbillion/extended-cpts": "^5",
+        "rss-bridge/rss-bridge": "2022-06-14",
+        "tlovett1/feed-pull": "dev-master",
+        "wpackagist-plugin/distributor-remote-quickedit": "*",
+        "wpackagist-plugin/term-management-tools": "^2.0"
+    },
+    "require-dev": {
+        "figuren-theater/code-quality": "^0.7.1"
     },
     "repositories": [
         {
@@ -68,21 +72,36 @@
         },
         {
             "type": "composer",
-            "url" : "https://wpackagist.org"
+            "url": "https://wpackagist.org"
         }
     ],
-    "require": {
-        "php": ">=7.1",
-        "figuren-theater/ft-options": "^1",
-        "figuren-theater/ft-network-sourcelinks": "^0.9",
-        "10up/distributor": "^1.9",
-        "devgeniem/shadow-taxonomy": "dev-master",
-        "humanmade/utility-taxonomy": "^1.4",
-        "johnbillion/extended-cpts": "^5",
-        "rss-bridge/rss-bridge": "2022-06-14",
-        "tlovett1/feed-pull": "dev-master",
-        "wpackagist-plugin/distributor-remote-quickedit":"*",
-        "wpackagist-plugin/term-management-tools": "^2.0"
+    "autoload": {
+        "classmap": [
+            "inc/"
+        ],
+        "files": [
+            "inc/distributor/namespace.php",
+            "inc/distributor-remote-quickedit/namespace.php",
+            "inc/feed-pull/auto-setup.php",
+            "inc/feed-pull/import.php",
+            "inc/feed-pull/namespace.php",
+            "inc/rss-bridge/detector.php",
+            "inc/rss-bridge/bridges.php",
+            "inc/rss-bridge/namespace.php",
+            "inc/ft-network-sourcelinks/namespace.php",
+            "inc/term-management-tools/namespace.php",
+            "inc/utility-taxonomy/namespace.php",
+            "inc/namespace.php"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "johnpbloch/wordpress-core-installer": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true
+        }
     },
     "extra": {
         "altis": {
@@ -96,18 +115,6 @@
                 "wpackagist-plugin/distributor-remote-quickedit",
                 "wpackagist-plugin/term-management-tools"
             ]
-        }
-    },
-    "require-dev": {
-        "figuren-theater/code-quality": "^0.7.1"
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "johnpbloch/wordpress-core-installer": true,
-            "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ergebnis/composer-normalize": true
         }
     }
 }
