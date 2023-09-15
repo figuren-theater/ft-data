@@ -18,6 +18,8 @@ const PLUGINPATH = FT_VENDOR_DIR . '/figuren-theater/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
+ *
+ * @return void
  */
 function bootstrap() {
 
@@ -33,6 +35,6 @@ function load_plugin() {
 	// - user-admin views
 	#if ( is_network_admin() || is_user_admin() )
 	#	return;
-	
+
 	require_once PLUGINPATH;
 }

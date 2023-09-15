@@ -3,14 +3,14 @@ declare(strict_types=1);
 /**
  * Figuren_Theater Data Feed_Pull.
  *
- * Whenever a new link post is created with the "import" term in the "utility" taxonomy, 
+ * Whenever a new link post is created with the "import" term in the "utility" taxonomy,
  * a new feed post should be automatically created with the link post as the parent.
- * This should also happen if the "import" term is added to an existing link post. 
- * 
- * If the "import" term is removed from a link post, the corresponding feed child-post should be deleted. 
- * If the link post is updated but still has the "import" term assigned, 
+ * This should also happen if the "import" term is added to an existing link post.
+ *
+ * If the "import" term is removed from a link post, the corresponding feed child-post should be deleted.
+ * If the link post is updated but still has the "import" term assigned,
  * the feed child-post should not be updated.
- * 
+ *
  * @package figuren-theater/data/feed_pull
  */
 
@@ -66,8 +66,8 @@ function admin_init() {
 
 
 /**
- * Create or update a feed post 
- * when a link post with the "import" term 
+ * Create or update a feed post
+ * when a link post with the "import" term
  * is saved or updated.
  *
  * @param WP_Post $post    The post object being saved or updated.
@@ -103,14 +103,14 @@ function create_feed_post( WP_Post $post ) : void {
         'post_title'  => 'Feed: ' . $post->post_content,
         'post_parent' => $post->ID,
         'post_status' => 'publish',
-		
+
 		'menu_order'     => 0,
 		'comment_status' => 'closed',
 		'ping_status'    => 'closed',
 
         'meta_input'   => [
         	'fp_feed_url'    => $fp_feed_url,
-        	ADAPTER_POSTMETA => '' // TODO // array_key of one of the get_bridges() array
+        	ADAPTER_POSTMETA => '' // @todo #16 // array_key of one of the get_bridges() array.
         ],
         'tax_input'  => [
         	UTILITY_TAX => [
@@ -136,7 +136,7 @@ function create_feed_post( WP_Post $post ) : void {
 
 /**
  * Delete feed post when the "import" term is removed from a link post.
- * 
+ *
  * Fires after an object's terms have been set.
  *
  * @param int    $object_id  Object ID.
@@ -162,15 +162,15 @@ function add_or_delete_feed_post( int $object_id, array $terms, array $new_terms
 		return;
 	}
 
-	// Add or remove feed posts 
-	// depending on 'import' term being 
+	// Add or remove feed posts
+	// depending on 'import' term being
 	// added or removed from Link posts.
-	// 
+	//
 	// Term is new and not yet assigned
 	if ( in_array( $import_term_id, $new_terms ) && ! in_array( $import_term_id, $old_terms ) ) {
 		//
 		create_feed_post( $post );
-	
+
 	// Term is not assigned, but was previously
 	} elseif ( ! in_array( $import_term_id, $new_terms ) && in_array( $import_term_id, $old_terms ) ) {
 		//
@@ -189,7 +189,7 @@ function add_or_delete_feed_post( int $object_id, array $terms, array $new_terms
  */
 function delete_feed_post_on_trash( int $post_id ) : void {
     $post = get_post( $post_id );
-    
+
     // Bail if post type is not a Link
     if ( $post->post_type !== LINK_PT ) {
         return;
@@ -205,7 +205,7 @@ function get_feed_from_link( int $link_post_id ) : int {
 	    'post_parent' => $link_post_id,
 	    'numberposts' => 1,
 	) );
-	
+
 	return ( empty($feed_post) ) ? 0 : $feed_post[0]->ID;
 }
 
