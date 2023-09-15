@@ -19,7 +19,7 @@ use function is_user_admin;
 
 
 const BASENAME   = 'rss-bridge/index.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/rss-bridge/' . BASENAME;
+const PLUGINPATH = '/rss-bridge/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.

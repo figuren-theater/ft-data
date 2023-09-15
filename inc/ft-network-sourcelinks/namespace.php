@@ -14,7 +14,7 @@ use function add_action;
 // use function is_user_admin;
 
 const BASENAME   = 'ft-network-sourcelinks/ft-network-sourcelinks.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/figuren-theater/' . BASENAME;
+const PLUGINPATH = '/figuren-theater/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
@@ -36,5 +36,5 @@ function load_plugin() {
 	#if ( is_network_admin() || is_user_admin() )
 	#	return;
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 }

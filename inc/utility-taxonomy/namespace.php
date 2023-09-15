@@ -12,7 +12,7 @@ use FT_VENDOR_DIR;
 use function add_action;
 
 const BASENAME   = 'utility-taxonomy/plugin.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/humanmade/' . BASENAME;
+const PLUGINPATH = '/humanmade/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
@@ -24,5 +24,5 @@ function bootstrap() {
 
 function load_plugin() {
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 }

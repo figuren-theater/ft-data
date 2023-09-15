@@ -31,7 +31,7 @@ use function remove_menu_page;
 use function remove_action;
 
 const BASENAME   = 'distributor/distributor.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/10up/' . BASENAME;
+const PLUGINPATH = '/10up/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
@@ -54,7 +54,7 @@ function load_plugin() {
 	// so we need to filter 'active_sitewide_plugins'
 	add_filter( 'site_option_active_sitewide_plugins', __NAMESPACE__ . '\\filter_site_option', 0 );
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	// Filters the arguments for registering a post type.
 	add_filter( 'register_post_type_args', __NAMESPACE__ . '\\register_post_type_args', 20, 2 );

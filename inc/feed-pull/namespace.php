@@ -33,7 +33,7 @@ use function wp_doing_cron;
 const FP_OPTION_NAME = 'fp_feed_pull';
 
 const BASENAME   = 'feed-pull/feed-pull.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/carstingaxion/' . BASENAME;
+const PLUGINPATH = '/carstingaxion/' . BASENAME;
 
 const FEED_POSTTYPE        = 'fp_feed';
 const DESTINATION_POSTTYPE = 'post';
@@ -62,7 +62,7 @@ function load_plugin() {
 	if ( is_network_admin() || is_user_admin() || ( ! is_admin() && ! wp_doing_cron() && ! wp_doing_ajax() ) )
 		return;
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
 	// create new 'fp_feed' posts, when a new 'ft_link' post is created
 	// which has an importable endpoint

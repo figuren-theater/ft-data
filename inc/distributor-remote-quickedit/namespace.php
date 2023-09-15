@@ -18,7 +18,7 @@ use function is_network_admin;
 use function is_user_admin;
 
 const BASENAME   = 'distributor-remote-quickedit/distributor-remote-quickedit.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/wpackagist-plugin/' . BASENAME;
+const PLUGINPATH = '/wpackagist-plugin/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
@@ -42,5 +42,5 @@ function load_plugin() {
 	if ( ! is_admin() || is_network_admin() || is_user_admin() )
 		return;
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 }
