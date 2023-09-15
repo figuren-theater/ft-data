@@ -8,15 +8,16 @@
 namespace Figuren_Theater\Data;
 
 use Altis;
-use function Altis\register_module;
 
 /**
  * Register module.
+ *
+ * @return void
  */
-function register() {
+function register() :void {
 
 	$default_settings = [
-		'enabled'                      => true, // needs to be set
+		'enabled'                      => true, // Needs to be set.
 		'distributor-remote-quickedit' => false,
 		'feed-pull'                    => false,
 	];
@@ -35,8 +36,10 @@ function register() {
 
 /**
  * Bootstrap module, when enabled.
+ *
+ * @return void
  */
-function bootstrap() {
+function bootstrap() :void {
 
 	Distributor\bootstrap();
 	Distributor_Remote_Quickedit\bootstrap();

@@ -41,18 +41,25 @@ const ADAPTER_POSTMETA     = '_ft_bridge_adapter';
 
 /**
  * Bootstrap module, when enabled.
+ *
+ * @return void
  */
-function bootstrap() {
+function bootstrap() :void {
 
 	add_action( 'Figuren_Theater\loaded', __NAMESPACE__ . '\\filter_options', 11 );
 
 	add_action( 'init', __NAMESPACE__ . '\\load_plugin', 0 );
 }
 
-function load_plugin() {
+/**
+ * Conditionally load the plugin itself and its modifications.
+ *
+ * @return void
+ */
+function load_plugin() :void {
 	$config = Figuren_Theater\get_config()['modules']['data'];
 	if ( ! $config['feed-pull'] )
-		return; // early
+		return;
 
 	// Do only load in "normal" admin view
 	// Not for:

@@ -18,16 +18,24 @@ const PLUGINPATH = '/wpackagist-plugin/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
+ *
+ * @return void
  */
-function bootstrap() {
+function bootstrap() :void {
 
 	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin' );
 }
 
-function load_plugin() {
+/**
+ * Conditionally load the plugin itself and its modifications.
+ *
+ * @return void
+ */
+function load_plugin() :void {
 
-	if ( ! is_admin() || wp_doing_cron() )
+	if ( ! is_admin() || wp_doing_cron() ) {
 		return;
+	}
 
 	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 }
