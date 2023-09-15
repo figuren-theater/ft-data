@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Feed_Pull.
  *
- * @package figuren-theater/data/feed_pull
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Feed_Pull;
@@ -45,7 +45,7 @@ const ADAPTER_POSTMETA     = '_ft_bridge_adapter';
 function bootstrap() {
 
 	add_action( 'Figuren_Theater\loaded', __NAMESPACE__ . '\\filter_options', 11 );
-	
+
 	add_action( 'init', __NAMESPACE__ . '\\load_plugin', 0 );
 }
 
@@ -76,19 +76,19 @@ function load_plugin() {
 	add_filter( 'register_'. FEED_POSTTYPE .'_post_type_args', __NAMESPACE__ . '\\register_post_type_args' );
 
 	add_action( 'admin_print_footer_scripts', __NAMESPACE__ . '\\custom_icons' );
-	
+
 	add_action( 'add_meta_boxes_' . FEED_POSTTYPE, __NAMESPACE__ . '\\modify_metaboxes' );
 }
 
 
 function filter_options() {
-	
+
 	$_options = [
 		'pull_interval'    => 3607, // default: 3600
 		'enable_feed_pull' => 1, // default: 1
 	];
 
-	// gets added to the 'OptionsCollection' 
+	// gets added to the 'OptionsCollection'
 	// from within itself on creation
 	new Options\Option(
 		FP_OPTION_NAME,
@@ -111,11 +111,11 @@ function remove_menu() : void {
  * @since   3.0
  *
  * @param   array     $args [description]
- * 
+ *
  * @return  [type]          [description]
  */
 function register_post_type_args( array $args ) : array {
-	
+
 	$cuc = current_user_can( 'manage_sites' );
 
 	$args['public']        = false; // WHY is this 'true' by default?

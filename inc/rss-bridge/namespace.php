@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Rss_Bridge.
  *
- * @package figuren-theater/data/rss_bridge
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Rss_Bridge;
@@ -41,7 +41,7 @@ function load_plugin() {
 	// - user-admin views
 	if ( is_network_admin() || is_user_admin() || ! is_admin() )
 		return;
-	
+
 	#require_once PLUGINPATH;
 
 }

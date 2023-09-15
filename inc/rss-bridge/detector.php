@@ -3,7 +3,7 @@ declare(strict_types=1);
 /**
  * Figuren_Theater Data Rss_Bridge.
  *
- * @package figuren-theater/data/rss_bridge
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Rss_Bridge;
@@ -70,22 +70,22 @@ function get_bridge_for_platform(string $platform): ?array {
  *
  * @param  string $bridge The name of the bridge to use.
  * @param  array  $params The parameters for the bridge.
- * 
+ *
  * @return string The generated RSS Bridge URL.
- * 
+ *
  * @example https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=WordPressBridge&url=https%3A%2F%2Fjuliaraab.de%2F&limit=3&content-selector=&format=Atom
  */
 function generate_rss_bridge_url_from_params( string $bridge, array $params ) : string {
-    // 
+    //
     // $rss_bridge_base_url = get_site_url( null, '/content/mu-plugins/rss-bridge-master/index.php' );
     $rss_bridge_base_url = plugins_url( 'index.php', dirname( PLUGINPATH ) );
-    
+
 
     // $query_params = http_build_query( [ 'format' => 'Atom', 'bridge' => $bridge ] + $params );
     // return 'https://..../display/?' . $query_params;
 
     // Build the query string parameters for the RSS Bridge API URL.
-    $params = wp_parse_args( 
+    $params = wp_parse_args(
         $params,
         [
             'action' => 'display',
@@ -95,9 +95,9 @@ function generate_rss_bridge_url_from_params( string $bridge, array $params ) : 
     );
 
     // Combine the query string parameters with the base URL.
-    return esc_url_raw( 
-        add_query_arg( 
-            $params, 
+    return esc_url_raw(
+        add_query_arg(
+            $params,
             $rss_bridge_base_url
         )
     );
@@ -111,7 +111,7 @@ function get_bridge_url( array $bridge, string $url, ?string $platform = null ) 
     $bridge_url_data = call_user_func($bridge['bridge_url_data'], $bridge, $url, $platform );
 
     // the bridged feed
-    return generate_rss_bridge_url_from_params( $bridge['bridge_name'], $bridge_url_data );	
+    return generate_rss_bridge_url_from_params( $bridge['bridge_name'], $bridge_url_data );
 }
 
 
@@ -147,7 +147,7 @@ function get_feed_url( array $bridge, string $url ) : string {
     // Call the bridge to get the feed URL
     $feed_url = call_user_func($bridge['feed_url_data'], $bridge['pattern'], $url );
 
-    // the normal feed 
+    // the normal feed
     return sprintf($bridge['feed_url'], $feed_url );
 }
 
@@ -169,12 +169,12 @@ function is_feed_ok( string $url ) : bool {
 
 /**
  * Detect which rss-brige to use,
- * based on the given URL and|or 
+ * based on the given URL and|or
  * the suggested bridge given by the author
  *
  * @param   string    $url              The websites source URL to get data from
  * @param   string    $suggested_bridge Suggested bridge given by the author during post_creation.
- * 
+ *
  * @return  string URL to the feed
  */
 function get_bridged_url(string $url, ?string $platform = null): ?string {
@@ -186,9 +186,9 @@ function get_bridged_url(string $url, ?string $platform = null): ?string {
     // Extract the domain from the URL
     if ($platform) {
     	$bridge = get_bridge_for_platform($platform);
-    } 
+    }
 
-    // 
+    //
     // Check if we have a bridge for the domain
     // if no platform was given or
     // even if a platform was set, but nothing was found
@@ -206,11 +206,11 @@ function get_bridged_url(string $url, ?string $platform = null): ?string {
     }
 	/* WORKING, used as fallback */
     if ($bridge && !$bridged_url) {
-        // the normal feed 
+        // the normal feed
         $bridged_url = get_feed_url( $bridge, $url );
     }
 
-    // Make sure we have a valid response, 
+    // Make sure we have a valid response,
     // which means status codes 200, 301 or 302
     if ( is_feed_ok( $bridged_url ) ) {
         return $bridged_url;

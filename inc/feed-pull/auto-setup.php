@@ -11,7 +11,7 @@ declare(strict_types=1);
  * If the link post is updated but still has the "import" term assigned,
  * the feed child-post should not be updated.
  *
- * @package figuren-theater/data/feed_pull
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Feed_Pull;

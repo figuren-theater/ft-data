@@ -9,7 +9,7 @@
  * Domain Path:     /languages
  * Version:         1.0.30
  *
- * @package         Figuren_Theater\Data
+ * @package         figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data;

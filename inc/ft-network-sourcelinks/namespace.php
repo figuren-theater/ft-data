@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data FT_Network_Sourcelinks.
  *
- * @package figuren-theater/data/ft_network_sourcelinks
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\FT_Network_Sourcelinks;

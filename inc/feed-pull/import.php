@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Feed_Pull.
  *
- * @package figuren-theater/data/feed_pull
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Feed_Pull;
@@ -56,16 +56,16 @@ function init() {
 
 /**
  * List of all post_meta keys, that are used by the 'feed-pull' plugin
- * and which should not be saved to the DB, for performance and storage reasons, 
+ * and which should not be saved to the DB, for performance and storage reasons,
  * but without compromising functionality.
- * 
+ *
  * @see https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L174-L181
  *
  * @return  array  post_meta keys we want to act on or with.
  */
 function get_default_static_metas() : array {
 	return [
-		
+
 		// ////////////////////////////////////////////////////
 		// post_meta of a normal 'fp_feed' post
 		// ////////////////////////////////////////////////////
@@ -81,12 +81,12 @@ function get_default_static_metas() : array {
 		// 'fp_custom_namespaces',			// this should come from a defined BridgeAdapter
 		// 'fp_namespace_prefix',			// this should come from a defined BridgeAdapter
 		// 'fp_namespace_url',				// this should come from a defined BridgeAdapter
-		
+
 
 		// ////////////////////////////////////////////////////
 		// post_meta of an imported DESTINATION_POSTTYPE post
 		// ////////////////////////////////////////////////////
-		
+
 		// 'fp_source_feed_id', // source post_ID
 		'fp_syndicated_post', // 1 // should not be saved, as it's never used by the plugin itself
 		// 'fp_guid',     // that should not treated by our filters
@@ -184,10 +184,10 @@ function get_fp_field_map() : array {
 
 /**
  * Normally the 'fp_source_feed_id' post_meta holds an post_ID.
- * 
- * This post_ID belongs to the 'feed-pull'-post, where the feed is defined, 
+ *
+ * This post_ID belongs to the 'feed-pull'-post, where the feed is defined,
  * that this post is imported from.
- * 
+ *
  * The post_meta is later on, only used within a simple empty() check,
  *
  *
@@ -239,7 +239,7 @@ function get_fp_source_feed_id( int $post_id ) : int|false {
  */
 function dont_update_post_metadata( $check, int $object_id, string $meta_key, mixed $meta_value ) : mixed {
 /*
-	// one special-operation 
+	// one special-operation
 	// but instead of writing to post_meta
 	// we are creating a taxonomy relation
 	// which can be queried much faster ... later on
@@ -250,14 +250,14 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
 		$ft_link = get_post( intval( $meta_value ) );
 		// 2. get sourced 'ft_link_shadow'-term-id
 		$TAX_Shadow = Taxonomies\TAX_Shadow::init();
-		$ft_link_term = $TAX_Shadow->get_associated_term( 
-			$ft_link, 
+		$ft_link_term = $TAX_Shadow->get_associated_term(
+			$ft_link,
 			$taxonomy
 		);
 
 		if (false !== $ft_link_term) {
 			// relate import with ft_link_shadow tax
-			wp_set_object_terms( 
+			wp_set_object_terms(
 				$object_id,
 				$ft_link_term->term_id,
 				$taxonomy
@@ -268,7 +268,7 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
 	// Send non-null, falsy return to prevent feed-pull post_meta from being written|updated
 	if ( in_array( $meta_key, get_default_static_metas() ) ) {
 		return false;
-	}	
+	}
 
 	// all other post_meta
 	return $check;
@@ -283,12 +283,12 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
  *   array (
  *     'source_field' => 'guid',
  *     'destination_field' => 'guid',
- *     'mapping_type' => 'post_field', 
- *   ), 
- *   
+ *     'mapping_type' => 'post_field',
+ *   ),
+ *
  * @param  [WP_Post] $post                  [description]
  * @param  [int] $source_feed_id        [description]
- * 
+ *
  * @return [type]                        [description]
  */
 function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $source_feed_id  ): string {
@@ -314,7 +314,7 @@ function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $sourc
 
 	// all other fields
 	return $pre_filter_post_value;
-}	
+}
 
 
 
@@ -328,11 +328,11 @@ function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $sourc
  * @param   array     $new_post_args  [description]
  * @param   ??????    $post           This is not a WP_Post.
  * @param   int       $source_feed_id This is the fp_feed Post, at least its ID, which is sourcing the new post
- * 
+ *
  * @return  array                     List of 'wp_insert_post()' combatible data.
  */
 function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : array {
-	
+
 	$import_args = get_import_args_from_source( $source_feed_id );
 
 	// Set some defaults
@@ -343,7 +343,7 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 	$new_post_args['post_author'] ?: Users\ft_bot::id();
 
 	// strip (maybe) filled excerpt
-	// if we can auto-generate it 
+	// if we can auto-generate it
 	if ( ! empty( $new_post_args['post_content'] ) && ! empty( $new_post_args['post_excerpt'] ) ) {
 		unset($new_post_args['post_excerpt']);
 	}
@@ -355,14 +355,14 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 
 
 function get_import_args_from_source( int $source_feed_id ) : array {
-	// 1. get sourced 'ft_link' post, 
+	// 1. get sourced 'ft_link' post,
 	// which is the parent of the 'fp_feed' that is sourcing this post
 	$ft_link =  get_post_parent( get_post( $source_feed_id ) );
-	
+
 	// 2. get sourced 'ft_link_shadow'-term-id
 	$TAX_Shadow = Taxonomies\TAX_Shadow::init();
-	$ft_link_term = $TAX_Shadow->get_associated_term( 
-		$ft_link, 
+	$ft_link_term = $TAX_Shadow->get_associated_term(
+		$ft_link,
 		$taxonomy
 	);
 
@@ -380,7 +380,7 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 
 /*
 function get_post_fields_from_utility_terms( int $source_feed_id ) : array {
-	$utility_terms = get_the_terms( 
+	$utility_terms = get_the_terms(
 		get_post( $source_feed_id ),
 		Features\UtilityFeaturesManager::TAX
 	);

@@ -6,7 +6,7 @@
  *
  * @see https://10up.github.io/distributor/
  *
- * @package figuren-theater/data/distributor
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Distributor;
@@ -39,17 +39,17 @@ const PLUGINPATH = FT_VENDOR_DIR . '/10up/' . BASENAME;
 function bootstrap() {
 
 	add_action( 'Figuren_Theater\loaded', __NAMESPACE__ . '\\filter_options', 11 );
-	
+
 	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin', 0 );
 }
 
 function load_plugin() {
 
-	// because this makes things visible 
+	// because this makes things visible
 	// to normal 'administrator' users
 	if ( ! defined( 'DISTRIBUTOR_DEBUG' ) && 'local' === WP_ENVIRONMENT_TYPE )
 		define( 'DISTRIBUTOR_DEBUG', WP_DEBUG );
-	
+
 	// the plugin checks for option 'active_sitewide_plugins'
 	// so we need to filter 'active_sitewide_plugins'
 	add_filter( 'site_option_active_sitewide_plugins', __NAMESPACE__ . '\\filter_site_option', 0 );
@@ -72,8 +72,8 @@ function admin_init() {
 
 	// puc_check_now-$slug
 	// 'puc_check_now-distributor' => '__return_false',
-	// 
-	
+	//
+
 	// Allow bypassing of all media processing.
 	add_filter( 'dt_push_post_media', __NAMESPACE__ . '\\dt_push_post_media' );
 
@@ -84,15 +84,15 @@ function admin_init() {
 	// Filter Distributor capabilities allowed to syndicate content.
 	add_filter( 'dt_syndicatable_capabilities', __NAMESPACE__ . '\\dt_syndicatable_capabilities' );
 
-	// 
+	//
 	// \add_filter( 'pre_site_option_external_updates-distributor', [ $this, 'pre_disable_updatecheck' ] );
 }
 
 
 
 function filter_site_option( $active_sitewide_plugins ) {
-	
-	// prevents the default admin-notice for missing plugin files, 
+
+	// prevents the default admin-notice for missing plugin files,
 	// which gets triggered by the FT_VENDOR_DIR path construct
 	global $pagenow;
 	if ( 'plugins.php' === $pagenow )
@@ -103,7 +103,7 @@ function filter_site_option( $active_sitewide_plugins ) {
 }
 
 function filter_options() : void {
-	
+
 	$_option_name = 'dt_settings';
 	$_options     = [
 		'override_author_byline' => false,
@@ -113,7 +113,7 @@ function filter_options() : void {
 		'valid_license'          => false, // Distributor: "Enable updates if we have a valid license" --> f.t ;)
 	];
 
-	// gets added to the 'OptionsCollection' 
+	// gets added to the 'OptionsCollection'
 	// from within itself on creation
 	new Options\Option(
 		$_option_name,
@@ -122,7 +122,7 @@ function filter_options() : void {
 		'site_option'
 	);
 
-	// gets added to the 'OptionsCollection' 
+	// gets added to the 'OptionsCollection'
 	// from within itself on creation
 	new Options\Option(
 		$_option_name,
@@ -167,7 +167,7 @@ function pre_disable_updatecheck() {
 
 /**
  * Filters the arguments for registering a post type.
- * 
+ *
  * @see https://developer.wordpress.org/reference/hooks/register_post_type_args/
  *
  * @since 4.4.0
@@ -193,8 +193,8 @@ function register_post_type_args( array $args, String $post_type ) : array {
  * In the future we can go on and allow personal distribution.
  * This is the place to start with.
  *
- * @see https://10up.github.io/distributor/dt_syndicatable_capabilities.html 
- * 
+ * @see https://10up.github.io/distributor/dt_syndicatable_capabilities.html
+ *
  * @param  String $capabilities default: edit_posts The capability allowed to syndicate content.
  * @return [type]               [description]
  */

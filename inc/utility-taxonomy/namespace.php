@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Utility_Taxonomy.
  *
- * @package figuren-theater/data/utility_taxonomy
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Utility_Taxonomy;

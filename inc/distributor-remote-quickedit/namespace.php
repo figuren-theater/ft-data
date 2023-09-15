@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Distributor_Remote_Quickedit.
  *
- * @package figuren-theater/data/distributor_remote_quickedit
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Distributor_Remote_Quickedit;
@@ -41,6 +41,6 @@ function load_plugin() {
 	// - user-admin views
 	if ( ! is_admin() || is_network_admin() || is_user_admin() )
 		return;
-	
+
 	require_once PLUGINPATH;
 }

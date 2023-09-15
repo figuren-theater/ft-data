@@ -3,68 +3,68 @@ declare(strict_types=1);
 /**
  * Figuren_Theater Data Rss_Bridge.
  *
- * @package figuren-theater/data/rss_bridge
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Rss_Bridge;
 
 
 // Does NOT work
-// 
+//
 // Youtube
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.youtube.com/channel/UCpGlwdRlimIXuPMEg7mw5ew&format=html
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.youtube.com/@juliaraab4423&format=html
-// 
+//
 // Flickr
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.flickr.com/photos/carstingaxion&format=html
-// 
+//
 // Twitch
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://www.twitch.tv/ryanwelchercodes&format=html
-// 
-// 
-// 
+//
+//
+//
 // Works very well
-// 
+//
 // Yotube (17. Versuch)
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=YoutubeBridge&context=By+custom+name&custom=%40juliaraab4423&duration_min=&duration_max=&format=Html
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=YoutubeBridge&context=By+channel+id&c=UCpGlwdRlimIXuPMEg7mw5ew&duration_min=&duration_max=&format=Html
-// 
+//
 // Flickr
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=FlickrBridge&context=By+username&u=carstingaxion&content=uploads&media=all&sort=date-posted-desc&format=Html
-// 
+//
 // Twitch
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=TwitchBridge&channel=ryanwelchercodes&type=archive&format=Html
-// 
-// 
+//
+//
 // Twitter
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=display&bridge=TwitterBridge&context=By+username&u=juliaraab&format=Html
 // https://figuren.test/content/mu-plugins/rss-bridge-master/?action=detect&url=https://twitter.com/juliaraab&format=html
 
 function get_bridges() : array {
 	// 1&1
-	// 
+	//
 
 	// !!
 	// '.jimdo.com'     => '%s/rss/blog/',
 	// '.jimdofree.com' => '%s/rss/blog/',
 
-	// 
+	//
 	// 'vimeo.com'      => '%s/videos/rss',
-	
-	// 
+
+	//
 	// 'wix.com'        => '%s/blog-feed.xml',  https://wix.com/{site}/blog-feed.xml'
-	
+
 	// Telegram
-	
+
 	// Mastodon
-	
+
 
 	// NO WAY
-	// - other than a sarcastic blog post - 
-	// 
+	// - other than a sarcastic blog post -
+	//
 	// facebook.com
 	// weebly.com
-  
+
     return array(
 
         "twitter" => array(

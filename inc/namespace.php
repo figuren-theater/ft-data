@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data.
  *
- * @package figuren-theater/data
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data;

@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Term_Management_Tools.
  *
- * @package figuren-theater/data/term_management_tools
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Term_Management_Tools;
