@@ -1,15 +1,21 @@
-.DS_Store
-phpcs.xml
-phpunit.xml
-Thumbs.db
-wp-cli.local.yml
-node_modules/
+/build/
+/node_modules
+/vendor
 *.sql
 *.tar.gz
 *.zip
+/wiki
+.vscode
 
-/vendor/
+# Generated via bin/transform-readme.php
+/readme.txt
+/.wp-env.override.json
 
-# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
+# misc
+.DS_Store
+Thumbs.db
+
+# is created during composer install,
+# when package is tested
+# and not running within ft-platform
+/wp-content/
