@@ -19,3 +19,4 @@ Thumbs.db
 # when package is tested
 # and not running within ft-platform
 /wp-content/
+/wordpress/
