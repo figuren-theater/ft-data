@@ -11,8 +11,9 @@
 
 namespace Figuren_Theater\Data\Distributor;
 
-use Figuren_Theater;
+use Distributor\Connection;
 
+use Figuren_Theater;
 use Figuren_Theater\FeaturesRepo;
 use Figuren_Theater\Network\Users;
 
@@ -73,18 +74,19 @@ function load_plugin() :void {
 	add_action( 'admin_init', __NAMESPACE__ . '\\admin_init', 0 );
 }
 
-function admin_init() {
+/**
+ * Fires as an admin screen or script is being initialized.
+ *
+ * @return void
+ */
+function admin_init() : void {
 
 	add_action( 'admin_init', __NAMESPACE__ . '\\remove_columns_from_lists', 9 );
-
-	// puc_check_now-$slug
-	// 'puc_check_now-distributor' => '__return_false',
-	//
 
 	// Allow bypassing of all media processing.
 	add_filter( 'dt_push_post_media', __NAMESPACE__ . '\\dt_push_post_media' );
 
-		add_filter( 'dt_push_post_args', __NAMESPACE__ . '\\dt_push_post_args', 9, 4 );
+	add_filter( 'dt_push_post_args', __NAMESPACE__ . '\\dt_push_post_args', 9, 4 );
 	add_filter( 'dt_pull_post_args', __NAMESPACE__ . '\\dt_pull_post_args', 9, 4 );
 
 	// Filter Distributor capabilities allowed to syndicate content.
@@ -94,10 +96,18 @@ function admin_init() {
 	// \add_filter( 'pre_site_option_external_updates-distributor', [ $this, 'pre_disable_updatecheck' ] );
 }
 
-function filter_site_option( $active_sitewide_plugins ) {
+/**
+ * Add 'Distributor' to the site-wide active plugins on-the-fly.
+ *
+ * Prevents the default admin-notice for missing plugin files,
+ * which gets triggered by the FT_VENDOR_DIR path construct.
+ *
+ * @param  array $active_sitewide_plugins    WordPress' default 'active_sitewide_plugins' site-option.
+ *
+ * @return array
+ */
+function filter_site_option( array $active_sitewide_plugins ) : array {
 
-	// Prevents the default admin-notice for missing plugin files,
-	// which gets triggered by the FT_VENDOR_DIR path construct.
 	global $pagenow;
 	if ( 'plugins.php' === $pagenow ) {
 		return $active_sitewide_plugins;
@@ -107,7 +117,12 @@ function filter_site_option( $active_sitewide_plugins ) {
 	return $active_sitewide_plugins;
 }
 
-function filter_options() : void {
+/**
+ * Handle options
+ *
+ * @return void
+ */
+function filter_options() :void {
 
 	$_option_name = 'dt_settings';
 	$_options     = [
@@ -115,11 +130,13 @@ function filter_options() : void {
 		'media_handling'         => 'featured',
 		'email'                  => getenv( 'FT_DATA_DISTRIBUTOR_EMAIL' ),
 		'license_key'            => getenv( 'FT_DATA_DISTRIBUTOR_KEY' ),
-		'valid_license'          => false, // Distributor: "Enable updates if we have a valid license" --> f.t ;)
+		'valid_license'          => false, // Distributor would like to "Enable updates if we have a valid license" --> But no, f.t ;) !
 	];
 
-	// gets added to the 'OptionsCollection'
-	// from within itself on creation
+	/*
+	 * Gets added to the 'OptionsCollection'
+	 * from within itself on creation.
+	 */
 	new Options\Option(
 		$_option_name,
 		$_options,
@@ -127,8 +144,10 @@ function filter_options() : void {
 		'site_option'
 	);
 
-	// gets added to the 'OptionsCollection'
-	// from within itself on creation
+	/*
+	 * Gets added to the 'OptionsCollection'
+	 * from within itself on creation.
+	 */
 	new Options\Option(
 		$_option_name,
 		$_options,
@@ -137,13 +156,24 @@ function filter_options() : void {
 
 }
 
+/**
+ * Remove the plugins admin-menu.
+ *
+ * @return void
+ */
 function remove_menu() : void {
 	remove_menu_page( 'distributor' );
 }
 
+/**
+ * Unclutter the UI for "normal" users.
+ *
+ * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
+ *
+ * @return void
+ */
 function remove_columns_from_lists() : void {
-	// Unclutter the UI for "normal" users.
-	// if ( 'this-site-is-not-a-network-hub' && ! \is_main_site( null, 1 ) )
+
 	if ( ! Figuren_Theater\FT::site()->has_feature( [ FeaturesRepo\Feature__core__contenthub::SLUG ] ) ) {
 		remove_action( 'admin_init', 'Distributor\\SyndicatedPostUI\\setup_columns' );
 	}
@@ -171,7 +201,7 @@ function pre_disable_updatecheck() {
  *
  * @see https://developer.wordpress.org/reference/hooks/register_post_type_args/
  *
- * @since 4.4.0
+ * @since WP 4.4.0
  *
  * @param array  $args      Array of arguments for registering a post type.
  *                          See the register_post_type() function for accepted arguments.
@@ -210,7 +240,7 @@ function dt_syndicatable_capabilities( string $capabilities ) : string {
  *
  * @hook dt_push_post_media
  *
- * @param {bool}       true           If Distributor should push the post media.
+ * @param {bool}       $value         If Distributor should push the post media.
  * @param {int}        $new_post_id   The newly created post ID.
  * @param {array}      $media         List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
  * @param {int}        $post_id       The original post ID.
@@ -223,14 +253,48 @@ function dt_push_post_media( $value ) {
 	return false;
 }
 
-function dt_push_post_args( $new_post_args, $post, $connection_args, $connection ) : array {
+/**
+ * Filter the arguments sent to the remote server during a push.
+ *
+ * @see    https://10up.github.io/distributor/dt_push_post_args.html
+ *
+ * @param  array      $new_post_args
+ * @param  WP_Post    $post
+ * @param  mixed      $connection_args
+ * @param  Connection $connection
+ *
+ * @return array
+ */
+function dt_push_post_args( array $new_post_args, WP_Post $post, mixed $connection_args, Connection $connection ) : array {
 	return push_pull_default_args( $new_post_args, $post );
 }
 
-function dt_pull_post_args( $new_post_args, $remote_post_id, $remote_post, $connection ) : array {
+/**
+ * Filter the arguments passed into wp_insert_post during a pull.
+ *
+ * @see    https://10up.github.io/distributor/dt_pull_post_args.html
+ *
+ * @param  array      $new_post_args  The post data to be inserted.
+ * @param  int        $remote_post_id The remote post ID.
+ * @param  WP_Post    $remote_post    The request that got the post.
+ * @param  Connection $connection     The Distributor connection pulling the post.
+ *
+ * @return array                      The post data to be inserted.
+ */
+function dt_pull_post_args( array $new_post_args, int $remote_post_id, WP_Post $remote_post, Connection $connection ) : array {
 	return push_pull_default_args( $new_post_args, $remote_post );
 }
 
+/**
+ *
+ *
+ * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
+ *
+ * @param  array   $new_post_args
+ * @param  WP_Post $original_post
+ *
+ * @return array
+ */
 function push_pull_default_args( array $new_post_args, WP_Post $original_post ) : array {
 	// Set author to machine user.
 	$new_post_args['post_author'] = Users\ft_bot::id();

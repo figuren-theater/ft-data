@@ -142,7 +142,6 @@ function get_feed_url( array $bridge, string $url ) : string {
 	// Call the bridge to get the feed URL.
 	$feed_url = call_user_func( $bridge['feed_url_data'], $bridge['pattern'], $url );
 
-	// the normal feed
 	return sprintf( $bridge['feed_url'], $feed_url );
 }
 
@@ -192,14 +191,11 @@ function get_bridged_url( string $url, ?string $platform = null ): ?string {
 	// Try to find a bridge Adapter.
 	if ( $bridge ) {
 		$bridged_url = get_bridge_url( $bridge, $url, $platform );
-		// if ($bridged_url) {
-		// // the bridged feed
-		// return $bridged_url;
-		// }
 	}
-	/* WORKING, used as fallback */
+
+	// WORKING, used as fallback.
 	if ( $bridge && ! $bridged_url ) {
-		// the normal feed
+		// Get the normal feed.
 		$bridged_url = get_feed_url( $bridge, $url );
 	}
 

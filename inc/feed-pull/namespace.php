@@ -7,18 +7,9 @@
 
 namespace Figuren_Theater\Data\Feed_Pull;
 
-use Figuren_Theater\Network\Features;
-use Figuren_Theater\Network\Users;
-
 use Figuren_Theater;
+use Figuren_Theater\Network\Features;
 use Figuren_Theater\Options;
-use function Figuren_Theater\get_config;
-
-
-// use FT_VENDOR_DIR;
-use WP_PLUGIN_DIR;
-
-
 use function add_action;
 use function add_filter;
 use function current_user_can;
@@ -29,7 +20,6 @@ use function remove_meta_box;
 use function wp_doing_ajax;
 use function wp_doing_cron;
 
-// use FP_OPTION_NAME;
 const FP_OPTION_NAME = 'fp_feed_pull';
 
 const BASENAME   = 'feed-pull/feed-pull.php';
@@ -58,45 +48,57 @@ function bootstrap() :void {
  */
 function load_plugin() :void {
 	$config = Figuren_Theater\get_config()['modules']['data'];
-	if ( ! $config['feed-pull'] )
+	if ( ! $config['feed-pull'] ) {
 		return;
+	}
 
 	// Do only load in "normal" admin view
 	// Not for:
 	// - public views
 	// - network-admin views
-	// - user-admin views
-	if ( is_network_admin() || is_user_admin() || ( ! is_admin() && ! wp_doing_cron() && ! wp_doing_ajax() ) )
+	// - user-admin views.
+	if ( is_network_admin() || is_user_admin() || ( ! is_admin() && ! wp_doing_cron() && ! wp_doing_ajax() ) ) {
 		return;
+	}
 
 	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 
-	// create new 'fp_feed' posts, when a new 'ft_link' post is created
-	// which has an importable endpoint
+	// Create new 'fp_feed' posts, when a new 'ft_link' post is created
+	// which has an importable endpoint.
 	bootstrap_auto_setup();
 
-	// everything related to importing normal posts from feeds
+	// Everything related to importing normal posts from feeds.
 	bootstrap_import();
 
 	add_action( 'admin_menu', __NAMESPACE__ . '\\remove_menu', 11 );
 
-	add_filter( 'register_'. FEED_POSTTYPE .'_post_type_args', __NAMESPACE__ . '\\register_post_type_args' );
+	add_filter( 'register_' . FEED_POSTTYPE . '_post_type_args', __NAMESPACE__ . '\\register_post_type_args' );
 
 	add_action( 'admin_print_footer_scripts', __NAMESPACE__ . '\\custom_icons' );
 
 	add_action( 'add_meta_boxes_' . FEED_POSTTYPE, __NAMESPACE__ . '\\modify_metaboxes' );
 }
 
-
-function filter_options() {
-
+/**
+ * Handle options
+ *
+ * @return void
+ */
+function filter_options() :void {
+	/**
+	 * Defaults:
+	 *  'pull_interval'    => 3600,
+	 *  'enable_feed_pull' => 1
+	 */
 	$_options = [
-		'pull_interval'    => 3607, // default: 3600
-		'enable_feed_pull' => 1, // default: 1
+		'pull_interval'    => 3607,
+		'enable_feed_pull' => 1,
 	];
 
-	// gets added to the 'OptionsCollection'
-	// from within itself on creation
+	/*
+	 * Gets added to the 'OptionsCollection'
+	 * from within itself on creation.
+	 */
 	new Options\Option(
 		FP_OPTION_NAME,
 		$_options,
@@ -105,6 +107,11 @@ function filter_options() {
 
 }
 
+/**
+ * Remove the plugins admin-menu.
+ *
+ * @return void
+ */
 function remove_menu() : void {
 	remove_submenu_page( 'options-general.php', 'feed-pull' );
 }
@@ -114,19 +121,16 @@ function remove_menu() : void {
  *
  * @see  https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-source-feed-cpt.php#L136
  *
- * @package [package]
- * @since   3.0
- *
  * @param   array     $args [description]
  *
- * @return  [type]          [description]
+ * @return  array           [description]
  */
 function register_post_type_args( array $args ) : array {
 
 	$cuc = current_user_can( 'manage_sites' );
 
 	$args['public']        = false; // WHY is this 'true' by default?
-	$args['supports']      = array( 'title', 'post-formats' );
+	$args['supports']      = [ 'title', 'post-formats' ];
 
 	$args['show_ui']       = $cuc;
 	$args['show_in_menu']  = $cuc;
@@ -140,28 +144,33 @@ function register_post_type_args( array $args ) : array {
 	return $args;
 }
 
-
-
+/**
+ * Removes 'post slug' metabox for all users and
+ * removes 'custom fields' metabox for all, but super-admin, users .
+ *
+ * @return void
+ */
 function modify_metaboxes() : void {
 
 	remove_meta_box( 'slugdiv', null, 'normal' );
 
-	if( ! current_user_can( 'manage_sites' ) )
+	if ( ! current_user_can( 'manage_sites' ) ) {
 		remove_meta_box( 'postcustom', null, 'normal' );
+	}
 }
-
 
 /**
  * Enqueue a script in the WordPress admin on post.php.
  *
+ * @return void
  */
 function custom_icons() : void {
-    global $pagenow, $typenow;
+	global $pagenow, $typenow;
 
-    if ( ('post.php' !== $pagenow && 'post-new.php' !== $pagenow) || 'fp_feed' !== $typenow ) {
-        return;
-    }
-    ?>
+	if ( ( 'post.php' !== $pagenow && 'post-new.php' !== $pagenow ) || 'fp_feed' !== $typenow ) {
+		return;
+	}
+	?>
 	<style type="text/css">
 	.misc-pub-section.misc-pub-fp-last-pulled label {
 		background: 0;
@@ -178,5 +187,5 @@ function custom_icons() : void {
 		vertical-align: top;
 	}
 	</style>
-    <?php
+	<?php
 }
