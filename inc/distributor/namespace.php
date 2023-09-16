@@ -91,9 +91,6 @@ function admin_init() : void {
 
 	// Filter Distributor capabilities allowed to syndicate content.
 	add_filter( 'dt_syndicatable_capabilities', __NAMESPACE__ . '\\dt_syndicatable_capabilities' );
-
-	//
-	// \add_filter( 'pre_site_option_external_updates-distributor', [ $this, 'pre_disable_updatecheck' ] );
 }
 
 /**
@@ -125,7 +122,8 @@ function filter_site_option( array $active_sitewide_plugins ) : array {
 function filter_options() :void {
 
 	$_option_name = 'dt_settings';
-	$_options     = [
+
+	$_options = [
 		'override_author_byline' => false,
 		'media_handling'         => 'featured',
 		'email'                  => getenv( 'FT_DATA_DISTRIBUTOR_EMAIL' ),
@@ -180,23 +178,6 @@ function remove_columns_from_lists() : void {
 }
 
 /**
- * [pre_disable_updatecheck description]
- *
- * Because this is a pre_option_ filter, do not return FALSE.
- *
- * @subpackage [subpackage]
- * @version    2022-10-21
- * @author Carsten Bach
- *
- * @return     [type]       [description]
-function pre_disable_updatecheck() {
-	// return false;
-	// return 'null';
-	return ! ( 'local' === \WP_ENVIRONMENT_TYPE );
-}
- */
-
-/**
  * Filters the arguments for registering a post type.
  *
  * @see https://developer.wordpress.org/reference/hooks/register_post_type_args/
@@ -208,10 +189,14 @@ function pre_disable_updatecheck() {
  * @param string $post_type Post type key.
  */
 function register_post_type_args( array $args, string $post_type ) : array {
-	if ( in_array( $post_type, [ 'dt_ext_connection', 'dt_subscription' ], true ) ) {
-		$args['can_export'] = current_user_can( 'manage_sites' );
-		$args['show_ui'] = false; // Disable this anoying 'dt_subscription'-menu, as it is only needed for ext. connections.
+	if ( ! in_array( $post_type, [ 'dt_ext_connection', 'dt_subscription' ], true ) ) {
+		return $args;
 	}
+
+	// Allow exports only to site-admins.
+	$args['can_export'] = current_user_can( 'manage_sites' );
+	// Disable this anoying 'dt_subscription'-menu, as it is only needed for ext. connections.
+	$args['show_ui'] = false;
 
 	return $args;
 }
@@ -240,16 +225,16 @@ function dt_syndicatable_capabilities( string $capabilities ) : string {
  *
  * @hook dt_push_post_media
  *
- * @param {bool}       $value         If Distributor should push the post media.
- * @param {int}        $new_post_id   The newly created post ID.
- * @param {array}      $media         List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
- * @param {int}        $post_id       The original post ID.
- * @param {array}      $args          The arguments passed into wp_insert_post.
- * @param {Connection} $this          The distributor connection being pushed to.
+ * @param bool       $value         If Distributor should push the post media.
+ * @param int        $new_post_id   The newly created post ID.
+ * @param array      $media         List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
+ * @param int        $post_id       The original post ID.
+ * @param array      $args          The arguments passed into wp_insert_post.
+ * @param Connection $this          The distributor connection being pushed to.
  *
  * @return {bool} If Distributor should push the post media.
  */
-function dt_push_post_media( $value ) {
+function dt_push_post_media( bool $value ) : bool {
 	return false;
 }
 
@@ -286,7 +271,7 @@ function dt_pull_post_args( array $new_post_args, int $remote_post_id, WP_Post $
 }
 
 /**
- *
+ * Streamline changes to new posts for both directions, pull & push.
  *
  * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
  *
