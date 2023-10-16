@@ -230,11 +230,11 @@ function dt_syndicatable_capabilities( string $capabilities ) : string {
  * @param array      $media         List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
  * @param int        $post_id       The original post ID.
  * @param array      $args          The arguments passed into wp_insert_post.
- * @param Connection $this          The distributor connection being pushed to.
+ * @param Connection $connection    The distributor connection being pushed to.
  *
  * @return {bool} If Distributor should push the post media.
  */
-function dt_push_post_media( bool $value ) : bool {
+function dt_push_post_media( bool $value, int $new_post_id, array $media, int $post_id, array $args, Connection $connection ) : bool {
 	return false;
 }
 
@@ -243,10 +243,10 @@ function dt_push_post_media( bool $value ) : bool {
  *
  * @see    https://10up.github.io/distributor/dt_push_post_args.html
  *
- * @param  array      $new_post_args
- * @param  WP_Post    $post
- * @param  mixed      $connection_args
- * @param  Connection $connection
+ * @param  array      $new_post_args   The request body to send.
+ * @param  WP_Post    $post            The WP_Post that is being pushed.
+ * @param  mixed      $connection_args Connection args to push.
+ * @param  Connection $connection      The distributor connection being pushed to.
  *
  * @return array
  */
@@ -275,8 +275,8 @@ function dt_pull_post_args( array $new_post_args, int $remote_post_id, WP_Post $
  *
  * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
  *
- * @param  array   $new_post_args
- * @param  WP_Post $original_post
+ * @param  array   $new_post_args The post data to be inserted.
+ * @param  WP_Post $original_post The original WP_post.
  *
  * @return array
  */
