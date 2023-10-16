@@ -5,10 +5,12 @@
  * @package figuren-theater/ft-data
  */
 
-namespace Figuren_Theater\Data\Feed_Pull;
+namespace Figuren_Theater\Data\Feed_Pull\Import;
+
+use Figuren_Theater\Data\Feed_Pull;
+use Figuren_Theater\Data\Feed_Pull\Auto_Setup;
 
 use Figuren_Theater\Data\Rss_Bridge;
-
 use Figuren_Theater\Network\Taxonomies;
 use Figuren_Theater\Network\Users;
 
@@ -23,15 +25,21 @@ use function sanitize_text_field;
 use function wp_parse_args;
 use function wp_slash;
 
-function bootstrap_import() {
+/**
+ * Bootstrap module, when enabled.
+ *
+ * @return void
+ */
+function bootstrap() :void {
 
 	add_action( 'init', __NAMESPACE__ . '\\init', 5 );
 }
 
 function init() {
 
-	// for debugging only
-	// delete_option( 'fp_deleted_syndicated' );
+	// Debugging only.
+	// phpcs:ignore
+	// delete_option( Auto_Setup\FP_DELETED_OPTION_NAME );
 
 	// https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L274
 	add_filter( 'fp_pre_post_insert_value', __NAMESPACE__ . '\\fp_pre_post_insert_value', 10, 4 );
@@ -103,14 +111,14 @@ function get_default_static_metas() : array {
  * @param string $meta_type Type of object metadata is for. Can be 'post', 'comment', 'term', 'user',
  *                          or any other object type with an associated meta table.
  */
-function default_post_metadata( mixed $value, int $object_id, string $meta_key ) : mixed {
+function default_post_metadata( mixed $value, int $object_id, string $meta_key, bool $single, string $meta_type ) : mixed {
 
-	// Go out for all other post_meta
-	if ( ! in_array( $meta_key, get_default_static_metas() ) ) {
+	// Go out for all other post_meta.
+	if ( ! in_array( $meta_key, get_default_static_metas(), true ) ) {
 		return $value;
 	}
 
-	$adapter = get_post_meta( $object_id, ADAPTER_POSTMETA, true );
+	$adapter = get_post_meta( $object_id, Feed_Pull\ADAPTER_POSTMETA, true );
 	$bridges = Rss_Bridge\get_bridges();
 
 	if ( ! isset( $bridges[ $adapter ] ) ) {
@@ -122,7 +130,7 @@ function default_post_metadata( mixed $value, int $object_id, string $meta_key )
 	switch ( $meta_key ) {
 
 		case 'fp_posts_xpath':
-			return $adapter['fp_posts_xpath'] ?? 'feed/entry'; // Atom
+			return $adapter['fp_posts_xpath'] ?? 'feed/entry'; // Atom feed.
 
 		case 'fp_field_map':
 			return $adapter['fp_field_map'] ?? get_fp_field_map();
@@ -156,12 +164,12 @@ function default_post_metadata( mixed $value, int $object_id, string $meta_key )
 function get_fp_field_map() : array {
 	return [
 		[
-			'source_field'      => 'title', // Atom
+			'source_field'      => 'title', // Atom feed.
 			'destination_field' => 'post_title',
 			'mapping_type'      => 'post_field',
 		],
 		[
-			'source_field'      => 'id', // Atom
+			'source_field'      => 'id', // Atom feed.
 			'destination_field' => 'guid',
 			'mapping_type'      => 'post_field',
 		],
@@ -221,7 +229,7 @@ function get_fp_source_feed_id( int $post_id ) : int|false {
  *                              If specified, only update existing metadata entries with
  *                              this value. Otherwise, update all entries.
  */
-function dont_update_post_metadata( $check, int $object_id, string $meta_key, mixed $meta_value ) : mixed {
+function dont_update_post_metadata( $check, int $object_id, string $meta_key, mixed $meta_value, mixed $prev_value ) : mixed {
 	/*
 	// one special-operation
 	// but instead of writing to post_meta
@@ -249,12 +257,12 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
 		}
 	}
 	*/
-	// Send non-null, falsy return to prevent feed-pull post_meta from being written|updated
-	if ( in_array( $meta_key, get_default_static_metas() ) ) {
+	// Send non-null, falsy return to prevent feed-pull post_meta from being written|updated.
+	if ( in_array( $meta_key, get_default_static_metas(), true ) ) {
 		return false;
 	}
 
-	// all other post_meta
+	// All other post_meta.
 	return $check;
 }
 
@@ -277,28 +285,19 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
  */
 function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $source_feed_id ): string {
 
-	if ( 'post_title' == $field['destination_field'] ) {
+	if ( 'post_title' === $field['destination_field'] ) {
 		return sanitize_text_field( $pre_filter_post_value );
 	}
 
-	if ( 'post_excerpt' == $field['destination_field'] ) {
+	if ( 'post_excerpt' === $field['destination_field'] ) {
 		return sanitize_textarea_field( $pre_filter_post_value );
 	}
 
-	if ( 'post_content' == $field['destination_field'] ) {
-		/*
-		$tags_to_strip = Array("figure","font" );
-		foreach ($tags_to_strip as $tag)
-		{
-			$pre_filter_post_value = preg_replace("/<\\/?" . $tag . "(.|\\s)*?>/",'',$pre_filter_post_value);
-
-		}		serialize_block( $block );*/
-		// return \wpautop( \wp_kses_post( $pre_filter_post_value ), true );
-		// return \do_blocks( \wp_kses_post( $pre_filter_post_value ), true );
+	if ( 'post_content' === $field['destination_field'] ) {
 		return do_blocks( $pre_filter_post_value );
 	}
 
-	// all other fields
+	// All other fields.
 	return $pre_filter_post_value;
 }
 
@@ -319,15 +318,15 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 
 	$import_args = get_import_args_from_source( $source_feed_id );
 
-	// Set some defaults
+	// Set some defaults.
 	$import_args['comment_status'] = 'closed';
 	$import_args['ping_status']    = 'closed';
 
-	// set author to machine user, if non set
+	// set author to machine user, if non set.
 	$new_post_args['post_author'] ?: Users\ft_bot::id();
 
-	// strip (maybe) filled excerpt
-	// if we can auto-generate it
+	// Strip (maybe) filled excerpt
+	// if we can auto-generate it.
 	if ( ! empty( $new_post_args['post_content'] ) && ! empty( $new_post_args['post_excerpt'] ) ) {
 		unset( $new_post_args['post_excerpt'] );
 	}
@@ -343,8 +342,8 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 	$ft_link = get_post_parent( get_post( $source_feed_id ) );
 
 	// 2. get sourced 'ft_link_shadow'-term-id
-	$TAX_Shadow = Taxonomies\TAX_Shadow::init();
-	$ft_link_term = $TAX_Shadow->get_associated_term(
+	$tax_shadow = Taxonomies\TAX_Shadow::init();
+	$ft_link_term = $tax_shadow->get_associated_term(
 		$ft_link,
 		$taxonomy
 	);

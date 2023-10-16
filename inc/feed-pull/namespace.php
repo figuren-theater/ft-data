@@ -65,10 +65,10 @@ function load_plugin() :void {
 
 	// Create new 'fp_feed' posts, when a new 'ft_link' post is created
 	// which has an importable endpoint.
-	bootstrap_auto_setup();
+	Auto_Setup\bootstrap();
 
 	// Everything related to importing normal posts from feeds.
-	bootstrap_import();
+	Import\bootstrap();
 
 	add_action( 'admin_menu', __NAMESPACE__ . '\\remove_menu', 11 );
 
@@ -121,9 +121,9 @@ function remove_menu() : void {
  *
  * @see  https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-source-feed-cpt.php#L136
  *
- * @param   array     $args [description]
+ * @param   array $args Arguments for registering a post type. See the register_post_type() function for accepted arguments.
  *
- * @return  array           [description]
+ * @return  array
  */
 function register_post_type_args( array $args ) : array {
 
@@ -167,7 +167,7 @@ function modify_metaboxes() : void {
 function custom_icons() : void {
 	global $pagenow, $typenow;
 
-	if ( ( 'post.php' !== $pagenow && 'post-new.php' !== $pagenow ) || 'fp_feed' !== $typenow ) {
+	if ( ( 'post.php' !== $pagenow && 'post-new.php' !== $pagenow ) || FEED_POSTTYPE !== $typenow ) {
 		return;
 	}
 	?>
