@@ -18,20 +18,21 @@ namespace Figuren_Theater\Data\Feed_Pull\Auto_Setup;
 use Figuren_Theater\Data\Feed_Pull;
 
 use Figuren_Theater\Data\Rss_Bridge;
+use function add_action;
 
 // use FP_DELETED_OPTION_NAME; // 'fp_deleted_syndicated' // Debugging only.
 
-use function add_action;
 use function get_post;
 use function get_post_meta;
 use function get_term_by;
-use function is_wp_error;
 use function wp_delete_post;
 use function wp_insert_post;
 use function wp_slash;
+use WP_Error;
 
 use WP_Post;
 use WP_Query;
+use WP_Term;
 
 // Normally defined in Post_Types\Post_Type__ft_link::NAME .
 const LINK_PT = 'ft_link';
@@ -91,14 +92,15 @@ function create_feed_post( WP_Post $link_post ) : void {
 	 *
 	 * @see Figuren_Theater\src\FeaturesAssets\core-my-registration\wp_core.php
 	 */
-	$suggestion = get_post_meta( $link_post->ID, '_ft_platform', true ) ?? null;
+	$suggestion = get_post_meta( $link_post->ID, '_ft_platform', true );
+	$suggestion = ( \is_string( $suggestion ) ) ? $suggestion : null;
+	$bridged_url = Rss_Bridge\get_bridged_url( $link_post->post_content, $suggestion );
+	if ( empty( $bridged_url ) ) {
+		return;
+	}
 
 	// Get bridged URL.
-	$fp_feed_url = esc_url(
-		Rss_Bridge\get_bridged_url( $link_post->post_content, $suggestion ),
-		'https',
-		'db'
-	);
+	$fp_feed_url = esc_url( $bridged_url, [ 'https' ], 'db' );
 
 	// Bail, if not importable.
 	if ( ! $fp_feed_url ) {
@@ -107,10 +109,10 @@ function create_feed_post( WP_Post $link_post ) : void {
 
 	// Prepare the insert arguments.
 	$insert_args = wp_slash( [
-		'post_author' => $link_post->post_author,
+		'post_author' => (int) $link_post->post_author,
 		'post_type'   => Feed_Pull\FEED_POSTTYPE,
 		'post_title'  => 'Feed: ' . $link_post->post_content,
-		'post_parent' => $link_post->ID,
+		'post_parent' => (int) $link_post->ID,
 		'post_status' => 'publish',
 
 		'menu_order'     => 0,
@@ -127,18 +129,21 @@ function create_feed_post( WP_Post $link_post ) : void {
 	]);
 
 	// Create the feed post with the link post as parent.
-	$feed_post_id = wp_insert_post( $insert_args );
+	$feed_post_id = wp_insert_post( $insert_args, true );
 
-	if ( is_wp_error( $feed_post_id ) ) {
-		// Log an error if the feed post could not be created.
-		error_log(
-			sprintf(
-				'Error creating feed post for link post with ID %d: %s',
-				$link_post->ID,
-				$feed_post_id->get_error_message()
-			)
-		);
+	if ( ! $feed_post_id instanceof WP_Error ) {
+		return;
 	}
+
+	// Something went wrong.
+	// Log an error if the feed post could not be created.
+	error_log(
+		sprintf(
+			'Error creating feed post for link post with ID %d: %s',
+			$link_post->ID,
+			$feed_post_id->get_error_message()
+		)
+	);
 }
 
 /**
@@ -147,11 +152,11 @@ function create_feed_post( WP_Post $link_post ) : void {
  * Fires after an object's terms have been set.
  *
  * @param int    $link_post_id  Object ID.
- * @param array  $terms      An array of object term IDs or slugs.
- * @param array  $new_terms  An array of term taxonomy IDs.
+ * @param string[]|int[]  $terms      An array of object term IDs or slugs.
+ * @param int[]  $new_terms  An array of term taxonomy IDs.
  * @param string $taxonomy   Taxonomy slug.
  * @param bool   $append     Whether to append new terms to the old terms.
- * @param array  $old_terms  Old array of term taxonomy IDs.
+ * @param int[]  $old_terms  Old array of term taxonomy IDs.
  */
 function add_or_delete_feed_post( int $link_post_id, array $terms, array $new_terms, string $taxonomy, bool $append, array $old_terms ) : void {
 	$import_term_id = get_import_term_id();
@@ -177,7 +182,7 @@ function add_or_delete_feed_post( int $link_post_id, array $terms, array $new_te
 	$link_post = get_post( $link_post_id );
 
 	// Return early if not a link post.
-	if ( ! is_a( $link_post, 'WP_Post' ) || $link_post->post_type !== LINK_PT ) {
+	if ( ( ! $link_post instanceof WP_Post ) || $link_post->post_type !== LINK_PT ) {
 		return;
 	}
 
@@ -209,7 +214,7 @@ function delete_feed_post_on_trash( int $link_post_id ) : void {
 	$link_post = get_post( $link_post_id );
 
 	// Bail if post type is not a Link.
-	if ( $link_post->post_type !== LINK_PT ) {
+	if ( \is_null( $link_post ) || $link_post->post_type !== LINK_PT ) {
 		return;
 	}
 	// Delete & trash the feed post.
@@ -231,7 +236,11 @@ function get_feed_from_link( int $link_post_id ) : int {
 		'numberposts' => 1,
 	] );
 
-	return ( empty( $feed_query->posts ) ) ? 0 : $feed_query->posts[0]->ID;
+	if ( empty( $feed_query->posts ) || ! $feed_query->posts[0] instanceof WP_Post ) {
+		return 0;
+	}
+
+	return $feed_query->posts[0]->ID;
 }
 
 /**
@@ -240,7 +249,12 @@ function get_feed_from_link( int $link_post_id ) : int {
  * @return int
  */
 function get_import_term_id() : int {
-	$term = get_term_by( 'slug', UTILITY_TERM, UTILITY_TAX );
 	// Get the "import" term ID.
-	return ( is_wp_error( $term ) ) ? 0 : $term->term_id;
+	$term = get_term_by( 'slug', UTILITY_TERM, UTILITY_TAX );
+
+	if ( ! $term instanceof WP_Term ) {
+		return 0;
+	}
+
+	return $term->term_id;
 }

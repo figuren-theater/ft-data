@@ -13,6 +13,7 @@ use Figuren_Theater\Options;
 use function add_action;
 use function add_filter;
 use function current_user_can;
+use function get_current_screen;
 use function is_admin;
 use function is_network_admin;
 use function is_user_admin;
@@ -141,7 +142,7 @@ function register_post_type_args( array $args ) : array {
 	$args['menu_position'] = 100;
 
 	$args['taxonomies']    = $args['taxonomies'] ?? [];
-	$args['taxonomies'][]  = Features\UtilityFeaturesManager::TAX;
+	$args['taxonomies'][]  = Features\UtilityFeaturesManager::TAX; // @phpstan-ignore-line
 
 	return $args;
 }
@@ -154,10 +155,15 @@ function register_post_type_args( array $args ) : array {
  */
 function modify_metaboxes() : void {
 
-	remove_meta_box( 'slugdiv', null, 'normal' );
+	$screen = get_current_screen();
+	if ( \is_null( $screen ) ) {
+		return;
+	}
+
+	remove_meta_box( 'slugdiv', $screen, 'normal' );
 
 	if ( ! current_user_can( 'manage_sites' ) ) {
-		remove_meta_box( 'postcustom', null, 'normal' );
+		remove_meta_box( 'postcustom', $screen, 'normal' );
 	}
 }
 

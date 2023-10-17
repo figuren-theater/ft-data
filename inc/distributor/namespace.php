@@ -23,11 +23,10 @@ use FT_VENDOR_DIR;
 use function add_action;
 use function add_filter;
 use function current_user_can;
-
 use function remove_action;
 use function remove_menu_page;
+use function wp_get_environment_type;
 use WP_DEBUG;
-use WP_ENVIRONMENT_TYPE;
 use WP_Post;
 
 const BASENAME   = 'distributor/distributor.php';
@@ -54,7 +53,7 @@ function load_plugin() :void {
 
 	// Because this makes things visible
 	// to normal 'administrator' users.
-	if ( ! defined( 'DISTRIBUTOR_DEBUG' ) && 'local' === WP_ENVIRONMENT_TYPE ) {
+	if ( ! defined( 'DISTRIBUTOR_DEBUG' ) && 'local' === wp_get_environment_type() ) {
 		define( 'DISTRIBUTOR_DEBUG', WP_DEBUG );
 	}
 
@@ -84,7 +83,7 @@ function admin_init() : void {
 	add_action( 'admin_init', __NAMESPACE__ . '\\remove_columns_from_lists', 9 );
 
 	// Allow bypassing of all media processing.
-	add_filter( 'dt_push_post_media', __NAMESPACE__ . '\\dt_push_post_media' );
+	add_filter( 'dt_push_post_media', __NAMESPACE__ . '\\dt_push_post_media', 10, 6 );
 
 	add_filter( 'dt_push_post_args', __NAMESPACE__ . '\\dt_push_post_args', 9, 4 );
 	add_filter( 'dt_pull_post_args', __NAMESPACE__ . '\\dt_pull_post_args', 9, 4 );
@@ -99,9 +98,9 @@ function admin_init() : void {
  * Prevents the default admin-notice for missing plugin files,
  * which gets triggered by the FT_VENDOR_DIR path construct.
  *
- * @param  array $active_sitewide_plugins    WordPress' default 'active_sitewide_plugins' site-option.
+ * @param  array<string, string> $active_sitewide_plugins    WordPress' default 'active_sitewide_plugins' site-option.
  *
- * @return array
+ * @return array<string, string>
  */
 function filter_site_option( array $active_sitewide_plugins ) : array {
 
@@ -166,12 +165,13 @@ function remove_menu() : void {
 /**
  * Unclutter the UI for "normal" users.
  *
- * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
+ * @todo https://github.com/figuren-theater/ft-data/issues/21 Refactor hard dependency on 'deprecated_figuren_theater_v2'
  *
  * @return void
  */
 function remove_columns_from_lists() : void {
 
+	// @phpstan-ignore-next-line
 	if ( ! Figuren_Theater\FT::site()->has_feature( [ FeaturesRepo\Feature__core__contenthub::SLUG ] ) ) {
 		remove_action( 'admin_init', 'Distributor\\SyndicatedPostUI\\setup_columns' );
 	}
@@ -184,9 +184,11 @@ function remove_columns_from_lists() : void {
  *
  * @since WP 4.4.0
  *
- * @param array  $args      Array of arguments for registering a post type.
- *                          See the register_post_type() function for accepted arguments.
- * @param string $post_type Post type key.
+ * @param array<string, mixed>  $args      Array of arguments for registering a post type.
+ *                                         See the register_post_type() function for accepted arguments.
+ * @param string                $post_type Post type key.
+ *
+ * @return array<string, mixed>
  */
 function register_post_type_args( array $args, string $post_type ) : array {
 	if ( ! in_array( $post_type, [ 'dt_ext_connection', 'dt_subscription' ], true ) ) {
@@ -225,14 +227,14 @@ function dt_syndicatable_capabilities( string $capabilities ) : string {
  *
  * @hook dt_push_post_media
  *
- * @param bool       $value         If Distributor should push the post media.
- * @param int        $new_post_id   The newly created post ID.
- * @param array      $media         List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
- * @param int        $post_id       The original post ID.
- * @param array      $args          The arguments passed into wp_insert_post.
- * @param Connection $connection    The distributor connection being pushed to.
+ * @param  bool                                               $value           If Distributor should push the post media.
+ * @param  int                                                $new_post_id     The newly created post ID.
+ * @param  array<int, array<string, mixed>>                   $media           List of media items attached to the post, formatted by {@link \Distributor\Utils\prepare_media()}.
+ * @param  int                                                $post_id         The original post ID.
+ * @param  array<string, array<int|string, array<int, int>>>  $args            The post data to be inserted. List of 'wp_insert_post()' combatible data.
+ * @param  Connection                                         $connection      The distributor connection being pushed to.
  *
- * @return {bool} If Distributor should push the post media.
+ * @return bool                                                                If Distributor should push the post media.
  */
 function dt_push_post_media( bool $value, int $new_post_id, array $media, int $post_id, array $args, Connection $connection ) : bool {
 	return false;
@@ -243,12 +245,12 @@ function dt_push_post_media( bool $value, int $new_post_id, array $media, int $p
  *
  * @see    https://10up.github.io/distributor/dt_push_post_args.html
  *
- * @param  array      $new_post_args   The request body to send.
- * @param  WP_Post    $post            The WP_Post that is being pushed.
- * @param  mixed      $connection_args Connection args to push.
- * @param  Connection $connection      The distributor connection being pushed to.
+ * @param  array<string, array<int|string, array<int, int>>>  $new_post_args   Weirdly, it says: 'The request body to send.', but usually this is: 'The post data to be inserted. List of 'wp_insert_post()' combatible data.'
+ * @param  WP_Post                                            $post            The WP_Post that is being pushed.
+ * @param  mixed                                              $connection_args Connection args to push.
+ * @param  Connection                                         $connection      The distributor connection being pushed to.
  *
- * @return array
+ * @return array<string, array<int|string, array<int, int>>>                   The post data to be inserted. List of 'wp_insert_post()' combatible data.
  */
 function dt_push_post_args( array $new_post_args, WP_Post $post, mixed $connection_args, Connection $connection ) : array {
 	return push_pull_default_args( $new_post_args, $post );
@@ -259,12 +261,12 @@ function dt_push_post_args( array $new_post_args, WP_Post $post, mixed $connecti
  *
  * @see    https://10up.github.io/distributor/dt_pull_post_args.html
  *
- * @param  array      $new_post_args  The post data to be inserted.
- * @param  int        $remote_post_id The remote post ID.
- * @param  WP_Post    $remote_post    The request that got the post.
- * @param  Connection $connection     The Distributor connection pulling the post.
+ * @param  array<string, array<int|string, array<int, int>>>  $new_post_args   The post data to be inserted. List of 'wp_insert_post()' combatible data.
+ * @param  int                                                $remote_post_id  The remote post ID.
+ * @param  WP_Post                                            $remote_post     The request that got the post.
+ * @param  Connection                                         $connection      The Distributor connection pulling the post.
  *
- * @return array                      The post data to be inserted.
+ * @return array<string, array<int|string, array<int, int>>>                   The post data to be inserted. List of 'wp_insert_post()' combatible data.
  */
 function dt_pull_post_args( array $new_post_args, int $remote_post_id, WP_Post $remote_post, Connection $connection ) : array {
 	return push_pull_default_args( $new_post_args, $remote_post );
@@ -275,14 +277,14 @@ function dt_pull_post_args( array $new_post_args, int $remote_post_id, WP_Post $
  *
  * @todo #20 Refactor hard dependency on 'deprecated_figuren_theater_v2'
  *
- * @param  array   $new_post_args The post data to be inserted.
- * @param  WP_Post $original_post The original WP_post.
+ * @param  array<string, array<int|string, array<int, int>>>  $new_post_args   The post data to be inserted. List of 'wp_insert_post()' combatible data.
+ * @param  WP_Post                                            $original_post   The original WP_post.
  *
- * @return array
+ * @return array<string, array<int|string, array<int, int>>>                   The post data to be inserted. List of 'wp_insert_post()' combatible data.
  */
 function push_pull_default_args( array $new_post_args, WP_Post $original_post ) : array {
 	// Set author to machine user.
-	$new_post_args['post_author'] = Users\ft_bot::id();
+	$new_post_args['post_author'] = Users\ft_bot::id(); // @phpstan-ignore-line
 
 	// By default 'Distributor' sets the current date as new published_date.
 	$new_post_args['post_date'] = $original_post->post_date;

@@ -24,6 +24,9 @@ use function sanitize_text_field;
 use function wp_parse_args;
 use function wp_slash;
 
+use SimpleXMLElement;
+use WP_Post;
+
 /**
  * Bootstrap module, when enabled.
  *
@@ -53,8 +56,8 @@ function init() {
 
 	add_filter( 'fp_post_args', __NAMESPACE__ . '\\fp_post_args', 10, 3 );
 
-	add_filter( 'default_post_metadata', __NAMESPACE__ . '\\default_post_metadata', 10, 3 );
-	add_filter( 'update_post_metadata', __NAMESPACE__ . '\\dont_update_post_metadata', 1000, 3 );
+	add_filter( 'default_post_metadata', __NAMESPACE__ . '\\default_post_metadata', 10, 5 );
+	add_filter( 'update_post_metadata', __NAMESPACE__ . '\\dont_update_post_metadata', 1000, 5 );
 }
 
 /**
@@ -64,7 +67,7 @@ function init() {
  *
  * @see https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L174-L181
  *
- * @return  array  post_meta keys we want to act on or with.
+ * @return  string[]  post_meta keys we want to act on or with.
  */
 function get_default_static_metas() : array {
 	return [
@@ -167,7 +170,7 @@ function default_post_metadata( mixed $value, int $object_id, string $meta_key, 
  * Default static post_meta that doesn't need to be saved into DB
  * because its the same (per bridge)
  *
- * @return  array List of feed-fields and their mappings within WordPress, following the 'feed-pull'-plugin conventions.
+ * @return  array<int, array<string, string>> List of feed-fields and their mappings within WordPress, following the 'feed-pull'-plugin conventions.
  */
 function get_fp_field_map() : array {
 	return [
@@ -279,8 +282,8 @@ function dont_update_post_metadata( null|bool $check, int $object_id, string $me
  *
  * @see https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L274
  *
- * @param  mixed $pre_filter_post_value [description]
- * @param  array $field                 [description]
+ * @param  string[]|string       $pre_filter_post_value   Content of the current feed-field iterated over.
+ * @param  array<string, string> $field                   One of the field types, see get_fp_field_map() for reference.
  *
  *   array (
  *     'source_field' => 'guid',
@@ -288,12 +291,16 @@ function dont_update_post_metadata( null|bool $check, int $object_id, string $me
  *     'mapping_type' => 'post_field',
  *   ),
  *
- * @param  WP_Post $post                 [description]
- * @param  int $source_feed_id           [description]
+ * @param  WP_Post               $post                     The new feed-item to import.
+ * @param  int                   $source_feed_id           The feed-post that we subscribed to.
  *
- * @return string                        [description]
+ * @return string
  */
-function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $source_feed_id ) : string {
+function fp_pre_post_insert_value( array|string $pre_filter_post_value, array $field, WP_Post $post, int $source_feed_id ) : string {
+
+	if ( \is_array( $pre_filter_post_value ) ) {
+		$pre_filter_post_value = $pre_filter_post_value[0];
+	}
 
 	if ( 'post_title' === $field['destination_field'] ) {
 		return sanitize_text_field( $pre_filter_post_value );
@@ -318,13 +325,15 @@ function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $sourc
  * Last chance to change anything
  * and: anything available ;)
  *
- * @param   array     $new_post_args  [description]
- * @param   ??????    $post           This is not a WP_Post.
- * @param   int       $source_feed_id This is the fp_feed Post, at least its ID, which is sourcing the new post
+ * @todo https://github.com/figuren-theater/ft-data/issues/21 Remove hard dependency on 'deprecated__Figuren_Theater__v2' using Taxonomies\...
  *
- * @return  array                     List of 'wp_insert_post()' combatible data.
+ * @param   array<string, array<int|string, array<int, int>>>  $new_post_args   List of 'wp_insert_post()' combatible data.
+ * @param   SimpleXMLElement                                   $post            This is the sourced feed element.
+ * @param   int                                                $source_feed_id  This is the fp_feed Post, at least its ID, which is sourcing the new post.
+ *
+ * @return  array<string, array<int|string, array<int, int>>>                   List of 'wp_insert_post()' combatible data.
  */
-function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : array {
+function fp_post_args( array $new_post_args, SimpleXMLElement $post, int $source_feed_id ) : array {
 
 	$import_args = get_import_args_from_source( $source_feed_id );
 
@@ -333,7 +342,7 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 	$import_args['ping_status']    = 'closed';
 
 	// set author to machine user, if non set.
-	$new_post_args['post_author'] ?: Users\ft_bot::id();
+	$new_post_args['post_author'] ?: Users\ft_bot::id(); // @phpstan-ignore-line
 
 	// Strip (maybe) filled excerpt
 	// if we can auto-generate it.
@@ -347,13 +356,15 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 }
 
 /**
- * Transform a given feed post_id into an array of wp_insert_post() compatible data for the new, to import, post.
+ * Transform a given feed post_id into an array
+ * of wp_insert_post() compatible data
+ * for the new, to import, post.
  *
  * @todo https://github.com/figuren-theater/ft-data/issues/21 Remove hard dependency on 'deprecated__Figuren_Theater__v2' using Taxonomies\...
  *
- * @param  int   $source_feed_id The post_ID of the sourcing feed.
+ * @param  int $source_feed_id                                The post_ID of the sourcing feed.
  *
- * @return array
+ * @return array<string, array<int|string, array<int, int>>>  List of 'wp_insert_post()' combatible data.
  */
 function get_import_args_from_source( int $source_feed_id ) : array {
 	// 1. get sourced 'ft_link' post,
@@ -361,10 +372,11 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 	$ft_link = get_post_parent( get_post( $source_feed_id ) );
 
 	// 2. get sourced 'ft_link_shadow'-term-id
-	$tax_shadow = Taxonomies\TAX_Shadow::init();
-	$ft_link_term = $tax_shadow->get_associated_term(
+	$tax_shadow_link = Taxonomies\Taxonomy__ft_link_shadow::NAME; // @phpstan-ignore-line
+	$tax_shadow      = Taxonomies\TAX_Shadow::init();             // @phpstan-ignore-line
+	$ft_link_term    = $tax_shadow->get_associated_term(
 		$ft_link,
-		Taxonomies\Taxonomy__ft_link_shadow::NAME
+		$tax_shadow_link
 	);
 
 	// 3. translate 'utility-tax' terms at the source
@@ -372,7 +384,7 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 	// $args = get_post_fields_from_utility_terms( $source_feed_id ) + [
 	$args = [
 		'tax_input'  => [
-			Taxonomies\Taxonomy__ft_link_shadow::NAME => [ $ft_link_term->term_id ],
+			$tax_shadow_link => [ (int) $ft_link_term->term_id ],
 		],
 	];
 
