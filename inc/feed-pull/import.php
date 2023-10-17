@@ -8,7 +8,6 @@
 namespace Figuren_Theater\Data\Feed_Pull\Import;
 
 use Figuren_Theater\Data\Feed_Pull;
-use Figuren_Theater\Data\Feed_Pull\Auto_Setup;
 
 use Figuren_Theater\Data\Rss_Bridge;
 use Figuren_Theater\Network\Taxonomies;
@@ -31,17 +30,25 @@ use function wp_slash;
  * @return void
  */
 function bootstrap() :void {
-
 	add_action( 'init', __NAMESPACE__ . '\\init', 5 );
 }
 
+/**
+ * Define hooks for automated 'CRUD' of imported/sourced posts.
+ *
+ * @return void
+ */
 function init() {
 
 	// Debugging only.
 	// phpcs:ignore
 	// delete_option( Auto_Setup\FP_DELETED_OPTION_NAME );
 
-	// https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L274
+	/**
+	 * Modify the imported content before save.
+	 *
+	 * @see https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L274
+	 */
 	add_filter( 'fp_pre_post_insert_value', __NAMESPACE__ . '\\fp_pre_post_insert_value', 10, 4 );
 
 	add_filter( 'fp_post_args', __NAMESPACE__ . '\\fp_post_args', 10, 3 );
@@ -66,25 +73,26 @@ function get_default_static_metas() : array {
 		// post_meta of a normal 'fp_feed' post
 		// ////////////////////////////////////////////////////
 
-		// 'fp_feed_url', // that should not treated by our filters
+		// 'fp_feed_url',                   // Should not treated by our filters.
 
-		'fp_posts_xpath',                   // this should come from a defined BridgeAdapter
-		'fp_field_map',                     // this should come from a defined BridgeAdapter
-		// 'fp_post_status',                  // this should NOT come from a defined BridgeAdapter
-		// 'fp_post_type',                    // this should NOT come from a defined BridgeAdapter
-		'fp_allow_updates',                 // this should come from a defined BridgeAdapter
-		'fp_new_post_categories',           // this should come from a defined BridgeAdapter
-		// 'fp_custom_namespaces',			// this should come from a defined BridgeAdapter
-		// 'fp_namespace_prefix',			// this should come from a defined BridgeAdapter
-		// 'fp_namespace_url',				// this should come from a defined BridgeAdapter
+		'fp_posts_xpath',                   // Should ... come from a defined BridgeAdapter.
+		'fp_field_map',                     // Should ... come from a defined BridgeAdapter.
+		// 'fp_post_status',                // Should NOT come from a defined BridgeAdapter.
+		// 'fp_post_type',                  // Should NOT come from a defined BridgeAdapter.
+		'fp_allow_updates',                 // Should ... come from a defined BridgeAdapter.
+		'fp_new_post_categories',           // Should ... come from a defined BridgeAdapter.
+		// 'fp_custom_namespaces',			// Should ... come from a defined BridgeAdapter.
+		// 'fp_namespace_prefix',			// Should ... come from a defined BridgeAdapter.
+		// 'fp_namespace_url',				// Should ... come from a defined BridgeAdapter.
 
 		// ////////////////////////////////////////////////////
 		// post_meta of an imported DESTINATION_POSTTYPE post
 		// ////////////////////////////////////////////////////
 
-		// 'fp_source_feed_id', // source post_ID
-		'fp_syndicated_post', // 1 // should not be saved, as it's never used by the plugin itself
-		// 'fp_guid',     // that should not treated by our filters
+		// 'fp_source_feed_id',             // source post_ID
+		'fp_syndicated_post',               // 1 // should not be saved, as it's never used by the plugin itself.
+
+		// 'fp_guid',                       // Should not treated by our filters.
 	];
 }
 
@@ -136,7 +144,7 @@ function default_post_metadata( mixed $value, int $object_id, string $meta_key, 
 			return $adapter['fp_field_map'] ?? get_fp_field_map();
 
 		// case 'fp_post_status':
-		// return 'pending';
+			// return 'pending'; //
 
 		// case 'fp_post_type':
 			// return $adapter['fp_post_type'] ?? DESTINATION_POSTTYPE;
@@ -229,7 +237,7 @@ function get_fp_source_feed_id( int $post_id ) : int|false {
  *                              If specified, only update existing metadata entries with
  *                              this value. Otherwise, update all entries.
  */
-function dont_update_post_metadata( $check, int $object_id, string $meta_key, mixed $meta_value, mixed $prev_value ) : mixed {
+function dont_update_post_metadata( null|bool $check, int $object_id, string $meta_key, mixed $meta_value, mixed $prev_value ) : null|bool {
 	/*
 	// one special-operation
 	// but instead of writing to post_meta
@@ -267,10 +275,12 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
 }
 
 /**
- * [fp_pre_post_insert_value description]
+ * Modify the imported content before save.
  *
- * @param  [mixed] $pre_filter_post_value [description]
- * @param  [array] $field                 [description]
+ * @see https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-pull.php#L274
+ *
+ * @param  mixed $pre_filter_post_value [description]
+ * @param  array $field                 [description]
  *
  *   array (
  *     'source_field' => 'guid',
@@ -278,12 +288,12 @@ function dont_update_post_metadata( $check, int $object_id, string $meta_key, mi
  *     'mapping_type' => 'post_field',
  *   ),
  *
- * @param  [WP_Post] $post                  [description]
- * @param  [int] $source_feed_id        [description]
+ * @param  WP_Post $post                 [description]
+ * @param  int $source_feed_id           [description]
  *
- * @return [type]                        [description]
+ * @return string                        [description]
  */
-function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $source_feed_id ): string {
+function fp_pre_post_insert_value( $pre_filter_post_value, $field, $post, $source_feed_id ) : string {
 
 	if ( 'post_title' === $field['destination_field'] ) {
 		return sanitize_text_field( $pre_filter_post_value );
@@ -336,6 +346,15 @@ function fp_post_args( array $new_post_args, $post, int $source_feed_id ) : arra
 	return wp_slash( $new_post_args );
 }
 
+/**
+ * Transform a given feed post_id into an array of wp_insert_post() compatible data for the new, to import, post.
+ *
+ * @todo https://github.com/figuren-theater/ft-data/issues/21 Remove hard dependency on 'deprecated__Figuren_Theater__v2' using Taxonomies\...
+ *
+ * @param  int   $source_feed_id The post_ID of the sourcing feed.
+ *
+ * @return array
+ */
 function get_import_args_from_source( int $source_feed_id ) : array {
 	// 1. get sourced 'ft_link' post,
 	// which is the parent of the 'fp_feed' that is sourcing this post
@@ -345,7 +364,7 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 	$tax_shadow = Taxonomies\TAX_Shadow::init();
 	$ft_link_term = $tax_shadow->get_associated_term(
 		$ft_link,
-		$taxonomy
+		Taxonomies\Taxonomy__ft_link_shadow::NAME
 	);
 
 	// 3. translate 'utility-tax' terms at the source
@@ -360,28 +379,3 @@ function get_import_args_from_source( int $source_feed_id ) : array {
 	return $args;
 }
 
-/*
-function get_post_fields_from_utility_terms( int $source_feed_id ) : array {
-	$utility_terms = get_the_terms(
-		get_post( $source_feed_id ),
-		Features\UtilityFeaturesManager::TAX
-	);
-
-	if (empty($utility_terms)) {
-		return [];
-	}
-
-	$utility_terms = wp_list_pluck( $utility_terms, 'slug' );
-
-	return array_map(
-		__NAMESPACE__ . '\\__get_post_field_from_term_slug',
-		$utility_terms
-	);
-}
-
-function __get_post_field_from_term_slug( string $term_slug ) : array {
-	$parts = explode('-', $term_slug);
-	$field = str_replace('post', 'post_', $parts[1]);
-	return [ $field => $parts[2] ];
-}
-*/

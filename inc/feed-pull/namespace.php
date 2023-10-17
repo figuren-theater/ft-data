@@ -119,11 +119,13 @@ function remove_menu() : void {
 /**
  * Modify 'fp_feed' post_type
  *
+ * @todo https://github.com/figuren-theater/ft-data/issues/21 Remove hard dependency on 'deprecated__Figuren_Theater__v2' using Taxonomies\...
+ *
  * @see  https://github.com/tlovett1/feed-pull/blob/45d667c1275cca0256bd03ed6fa1655cdf26f064/includes/class-fp-source-feed-cpt.php#L136
  *
- * @param   array $args Arguments for registering a post type. See the register_post_type() function for accepted arguments.
+ * @param   array<string, mixed> $args Arguments for registering a post type. See the register_post_type() function for accepted arguments.
  *
- * @return  array
+ * @return  array<string, mixed>
  */
 function register_post_type_args( array $args ) : array {
 
