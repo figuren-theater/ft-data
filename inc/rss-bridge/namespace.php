@@ -45,7 +45,7 @@ function load_plugin() :void {
 	if ( is_network_admin() || is_user_admin() || ! is_admin() ) {
 		return;
 	}
-
+// \do_action('qm/error','active');
 	// require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant // @todo #19 When / where to load rss-bridge?
 }
 

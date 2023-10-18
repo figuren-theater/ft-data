@@ -16,35 +16,46 @@ namespace Figuren_Theater\Data\Rss_Bridge;
  * 3. ft-network-source-links WordPress plugin
  */
 class Adapter {
-	
-	/**
-	 * RSS-Bridge Definition class
-	 * @var BridgeAbstract
-	 */
-	protected $bridge;
+
+	public static string $lookup_url;
+
+	public static ?string $platform_suggestion = null;
+
+	protected static string $name;
 
 	/**
-	 * Full URL of a website, which content to import
+	 * RegEx Pattern to match a Full URL of an importable website.
+	 *
 	 * @var string
 	 */
-	protected $url;
+	protected static string $pattern;
 
 	/**
-	 * [__construct description]
 	 *
-	 * @param   BridgeAbstract $bridge [description]
-	 * @param   string         $url    [description]
+	 *
+	 * @param   string         $pattern  [description]
 	 */
-	function __construct( BridgeAbstract $bridge, string $url ) {
-		$this->bridge = $bridge;
-		$this->url    = $url;
+	public function for( string $lookup_url, ?string $platform_suggestion = null ) {
+		$this->lookup_url          = $lookup_url;
+		$this->platform_suggestion = $platform_suggestion;
 	}
+
+	function get_name() : string {
+		return $this->name;
+	}
+
+	function get_pattern() : string {
+		return $this->pattern;
+	}
+
+
+
 
 	/**
 	 * Get parameters to build a query URL for the RSS-Bridge API.
 	 *
 	 * Returns all individual parameters needed for that particular bridge.
-	 * This could include 'url' or 'u', maybe 'limit', and many more, 
+	 * This could include 'url' or 'u', maybe 'limit', and many more,
 	 * but NOT 'format' and 'action' as theese are assigned globally.
 	 *
 	 * @return array List of escaped URL parameters to query the RSS-Bridge API.
@@ -55,9 +66,9 @@ class Adapter {
 
 	public function get_formality_block() {}
 	public function get_ft_link_edit_ui() {}
-	
+
 
 	public function get_insert_imports_args() {
-		
+
 	}
 }

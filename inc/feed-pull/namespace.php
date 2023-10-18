@@ -25,6 +25,7 @@ const FP_OPTION_NAME = 'fp_feed_pull';
 
 const BASENAME   = 'feed-pull/feed-pull.php';
 const PLUGINPATH = '/carstingaxion/' . BASENAME;
+// const PLUGINPATH = '/tlovett1/' . BASENAME; // phpcs:ignore !
 
 const FEED_POSTTYPE        = 'fp_feed';
 const DESTINATION_POSTTYPE = 'post';

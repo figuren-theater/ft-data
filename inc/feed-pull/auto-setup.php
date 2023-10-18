@@ -40,6 +40,12 @@ const LINK_PT = 'ft_link';
 const UTILITY_TAX = 'hm-utility';
 // Normally defined in UtilityFeaturesRepo\UtilityFeature__ft_link__feedpull_import::SLUG .
 const UTILITY_TERM = 'feedpull-import';
+/**
+ * The post_meta field key, in which the suggested platform will be saved for each 'ft_link' post.
+ *
+ * @see Figuren_Theater\src\FeaturesAssets\core-my-registration\wp_core.php
+ */
+const PLATFORM_SUGGEST_POSTMETA_KEY = '_ft_platform';
 
 /**
  * Bootstrap module, when enabled.
@@ -62,6 +68,12 @@ function admin_init() {
 	// delete_option( FP_DELETED_OPTION_NAME );
 
 	// Hook into save_post to create/update feed post.
+	/**
+	 * Whenever a 'ft_link' post is saved, CRUD the corresponding 'fp_feed' post.
+	 *
+	 * @todo Enable this when (RSS-Bridge Integration #6) is ready.
+	 */
+	// phpcs:ignore
 	// add_action( 'save_post_'.LINK_PT, __NAMESPACE__ . '\\create_feed_post', 10, 2 ); // DEBUG !
 
 	// Hook into set_object_terms to add or delete a feed post.
@@ -89,10 +101,8 @@ function create_feed_post( WP_Post $link_post ) : void {
 	/**
 	 * Look for a platform suggestion
 	 * which use user may have given during registration.
-	 *
-	 * @see Figuren_Theater\src\FeaturesAssets\core-my-registration\wp_core.php
 	 */
-	$suggestion = get_post_meta( $link_post->ID, '_ft_platform', true );
+	$suggestion = get_post_meta( $link_post->ID, PLATFORM_SUGGEST_POSTMETA_KEY, true );
 	$suggestion = ( \is_string( $suggestion ) ) ? $suggestion : null;
 	$bridged_url = Rss_Bridge\get_bridged_url( $link_post->post_content, $suggestion );
 	if ( empty( $bridged_url ) ) {
@@ -231,9 +241,13 @@ function delete_feed_post_on_trash( int $link_post_id ) : void {
 function get_feed_from_link( int $link_post_id ) : int {
 
 	$feed_query = new WP_Query( [
-		'post_type'   => Feed_Pull\FEED_POSTTYPE,
-		'post_parent' => $link_post_id,
-		'numberposts' => 1,
+		'post_type'              => Feed_Pull\FEED_POSTTYPE,
+		'post_parent'            => $link_post_id,
+		'numberposts'            => 1,
+		'no_found_rows'          => true,
+		'cache_results'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
 	] );
 
 	if ( empty( $feed_query->posts ) || ! $feed_query->posts[0] instanceof WP_Post ) {
