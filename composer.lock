@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "291fb77c0aa0027cea289bdf7576798c",
+    "content-hash": "dcefda3c7295bcd81647a464ff05ebc3",
     "packages": [
         {
             "name": "10up/distributor",
@@ -246,11 +246,11 @@
         },
         {
             "name": "figuren-theater/ft-network-sourcelinks",
-            "version": "0.9.0",
+            "version": "0.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/figuren-theater/ft-network-sourcelinks",
-                "reference": "20fe74bb2530997c0e2056411dcd996526a45ea8"
+                "reference": "a3045e35bd01b99285c6c4708a5def5d4267ad96"
             },
             "require": {
                 "johnpbloch/wordpress": "^6.0",
@@ -287,7 +287,7 @@
                 "issues": "https://github.com/figuren-theater/ft-network-sourcelinks/issues",
                 "source": "https://github.com/figuren-theater/ft-network-sourcelinks"
             },
-            "time": "2023-05-25T10:46:45+00:00"
+            "time": "2023-10-16T22:03:25+00:00"
         },
         {
             "name": "figuren-theater/ft-options",
