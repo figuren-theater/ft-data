@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcefda3c7295bcd81647a464ff05ebc3",
+    "content-hash": "d1d2f9b5c3b059b53f40e7cbce02e6c1",
     "packages": [
         {
             "name": "10up/distributor",
@@ -812,16 +812,16 @@
         },
         {
             "name": "rss-bridge/rss-bridge",
-            "version": "2022-06-14",
+            "version": "2023-09-24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RSS-Bridge/rss-bridge.git",
-                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b"
+                "reference": "857e908929ef26da41646c04804cbd4aa106ec52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RSS-Bridge/rss-bridge/zipball/9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
-                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
+                "url": "https://api.github.com/repos/RSS-Bridge/rss-bridge/zipball/857e908929ef26da41646c04804cbd4aa106ec52",
+                "reference": "857e908929ef26da41646c04804cbd4aa106ec52",
                 "shasum": ""
             },
             "require": {
@@ -831,7 +831,7 @@
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
                 "ext-simplexml": "*",
-                "php": ">=7.1"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9",
@@ -839,8 +839,10 @@
             },
             "suggest": {
                 "ext-dom": "Allows to use some bridges based on XPath expressions",
+                "ext-intl": "Required for OLXBridge",
                 "ext-memcached": "Allows to use memcached as cache type",
-                "ext-sqlite3": "Allows to use an SQLite database for caching"
+                "ext-sqlite3": "Allows to use an SQLite database for caching",
+                "ext-zip": "Required for FDroidRepoBridge"
             },
             "type": "project",
             "notification-url": "https://packagist.org/downloads/",
@@ -866,7 +868,7 @@
                 "rss": "https://github.com/RSS-Bridge/rss-bridge/commits/master.atom",
                 "source": "https://github.com/rss-bridge/rss-bridge/"
             },
-            "time": "2022-06-14T13:47:12+00:00"
+            "time": "2023-09-24T18:53:07+00:00"
         },
         {
             "name": "tlovett1/feed-pull",
