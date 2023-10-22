@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased](https://github.com/figuren-theater/ft-data/compare/1.0.31...HEAD)
+## [Unreleased](https://github.com/figuren-theater/ft-data/compare/1.0.32...HEAD)
+
+## [1.0.32](https://github.com/figuren-theater/ft-data/compare/1.0.31...1.0.32) - 2023-10-22
+
+### 🐛 Fixed 🚧 Still heavy WIP
+
+- Re-Update f.t/network-source-links to forgotten version (which was already included) ([#24](https://github.com/figuren-theater/ft-data/pull/24))
 
 ## [1.0.31](https://github.com/figuren-theater/ft-data/compare/1.0.30...1.0.31) - 2023-10-22
 
