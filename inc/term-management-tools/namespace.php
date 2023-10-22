@@ -2,7 +2,7 @@
 /**
  * Figuren_Theater Data Term_Management_Tools.
  *
- * @package figuren-theater/data/term_management_tools
+ * @package figuren-theater/ft-data
  */
 
 namespace Figuren_Theater\Data\Term_Management_Tools;
@@ -14,20 +14,28 @@ use function is_admin;
 use function wp_doing_cron;
 
 const BASENAME   = 'term-management-tools/term-management-tools.php';
-const PLUGINPATH = FT_VENDOR_DIR . '/wpackagist-plugin/' . BASENAME;
+const PLUGINPATH = '/wpackagist-plugin/' . BASENAME;
 
 /**
  * Bootstrap module, when enabled.
+ *
+ * @return void
  */
-function bootstrap() {
+function bootstrap() :void {
 
 	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin' );
 }
 
-function load_plugin() {
+/**
+ * Conditionally load the plugin itself and its modifications.
+ *
+ * @return void
+ */
+function load_plugin() :void {
 
-	if ( ! is_admin() || wp_doing_cron() )
+	if ( ! is_admin() || wp_doing_cron() ) {
 		return;
+	}
 
-	require_once PLUGINPATH;
+	require_once FT_VENDOR_DIR . PLUGINPATH; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomConstant
 }

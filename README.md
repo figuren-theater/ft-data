@@ -21,7 +21,7 @@
   </p>
 </div>
 
-## About 
+## About
 
 
 This is the long desc
@@ -63,7 +63,7 @@ composer require figuren-theater/ft-data
 
 ### Plugins included
 
-This package contains the following plugins. 
+This package contains the following plugins.
 Thoose are completely managed by code and lack of their typical UI.
 
 * [Distributor](https://github.com/10up/distributor)
@@ -120,11 +120,11 @@ who participated in this project.
 
 ## License
 
-This project is licensed under the [GPL-3.0-or-later](LICENSE.md), see the [LICENSE](LICENSE) file for
+This project is licensed under the **GPL-3.0-or-later**, see the [LICENSE](/LICENSE) file for
 details
 
 ## Acknowledgments
 
   - [altis](https://github.com/search?q=org%3Ahumanmade+altis) by humanmade, as our digital role model and inspiration
   - [@roborourke](https://github.com/roborourke) for his clear & understandable [coding guidelines](https://docs.altis-dxp.com/guides/code-review/standards/)
-  
+

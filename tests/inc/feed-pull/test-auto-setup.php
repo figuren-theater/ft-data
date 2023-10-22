@@ -1,27 +1,27 @@
 <?php
 
 /**
- * If everything is working correctly, 
- * you should be able to create link posts with the "import" term 
- * and have feed posts automatically created, 
+ * If everything is working correctly,
+ * you should be able to create link posts with the "import" term
+ * and have feed posts automatically created,
  * and have the feed posts automatically deleted when the "import" term is removed.
  *
  * Here are the steps to test the functionality:
- * 
- * 1. Create a link post with the "import" term in the "utility" taxonomy. 
+ *
+ * 1. Create a link post with the "import" term in the "utility" taxonomy.
  *    This should create a feed post with the link post as its parent.
  *
- * 2. Edit the link post and make sure 
- *    that the feed post is not deleted 
- *    when the "import" term is still assigned. 
+ * 2. Edit the link post and make sure
+ *    that the feed post is not deleted
+ *    when the "import" term is still assigned.
  *    Also, make sure that the feed post is deleted when the "import" term is removed.
  *
  * 3. Trash the feed post and make sure that it's deleted.
- * 
- * 4. Add the "import" term to an existing link post 
+ *
+ * 4. Add the "import" term to an existing link post
  *    and make sure that it creates a feed post.
- * 
- * 5. Remove the "import" term from an existing link post 
+ *
+ * 5. Remove the "import" term from an existing link post
  *    and make sure that it deletes the feed post.
  */
 
@@ -116,3 +116,4 @@ class AutoSetupTest extends WP_UnitTestCase {
     public function test_delete_feed_post_on_feed() {
     	// ...
     }
+}

@@ -21,8 +21,12 @@ function bootstrap_detector() {
 
 	add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_plugin', 9 );
 }
-
-function load_plugin() {
+/**
+ * Conditionally load the plugin itself and its modifications.
+ *
+ * @return void
+ */
+function load_plugin() :void {
 
 	// Do only load in "normal" admin view
 	// and public views
@@ -31,7 +35,7 @@ function load_plugin() {
 	// - user-admin views
 	#if ( is_network_admin() || is_user_admin() )
 	#	return;
-	
+
 	require_once PLUGINPATH;
 }
  */
@@ -51,18 +55,18 @@ class Detector
 	 * The Class Object
 	 */
 	static private $instance = null;
-	
+
 	function __construct() {}
 
 
 	public static function get_importable_services() : array {
-		
+
 		return [		];
 
 	}
 
 	public static function find_importable_endpoint( int $post_ID, WP_Post $post, bool $update ) : void {
-		
+
 		// run only on the first run
 		if ( $update )
 			return;
@@ -72,7 +76,7 @@ class Detector
 			return;
 
 		// make sure it is a well formed URL
-		$new_url = esc_url( 
+		$new_url = esc_url(
 			$post->post_content,
 			[
 				'http',
@@ -87,12 +91,12 @@ class Detector
 
 		// well prepared,
 		// let's go
-		// 
+		//
 		// hand the URL to our RSS-detective
 		if ( static::has_importable_endpoint( $new_url ) ){
 			// we found something ...
 		}
-		#	wp_set_object_terms( 
+		#	wp_set_object_terms(
 		#		$post_ID,
 		#		[
 		#			'is-importable',
@@ -109,7 +113,7 @@ class Detector
 
 		$found = false;
 		foreach ( static::get_importable_services() as $url_to_search => $pattern ) {
-	
+
 			if ( $found )
 				return $found;
 
@@ -117,11 +121,11 @@ class Detector
 
 				#\do_action( 'qm/info', sprintf( $pattern, $new_url ) . ' can be imported.' );
 				$found = true;
-				do_action( 
+				do_action(
 					__NAMESPACE__ . '\\found_importable_endpoint',
 					sprintf( $pattern, $new_url )
 				);
-			} 
+			}
 		}
 
 		if ( $found )
