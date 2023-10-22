@@ -31,19 +31,19 @@
     },
     "require": {
         "php": ">=7.1",
-        "10up/distributor": "^1.9",
+        "10up/distributor": "1.9.1",
         "devgeniem/shadow-taxonomy": "dev-master",
-        "figuren-theater/ft-network-sourcelinks": "^0.9",
-        "figuren-theater/ft-options": "^1",
-        "humanmade/utility-taxonomy": "^1.4",
-        "johnbillion/extended-cpts": "^5",
+        "figuren-theater/ft-network-sourcelinks": "0.9.0",
+        "figuren-theater/ft-options": "*",
+        "humanmade/utility-taxonomy": "1.4.4",
+        "johnbillion/extended-cpts": "5.0.5",
         "rss-bridge/rss-bridge": "2022-06-14",
         "tlovett1/feed-pull": "dev-master",
         "wpackagist-plugin/distributor-remote-quickedit": "*",
-        "wpackagist-plugin/term-management-tools": "^2.0"
+        "wpackagist-plugin/term-management-tools": "2.0.1"
     },
     "require-dev": {
-        "figuren-theater/code-quality": "^0.7.1"
+        "figuren-theater/code-quality": "*"
     },
     "repositories": [
         {
