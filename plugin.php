@@ -7,7 +7,7 @@
  * Author URI:      https://figuren.theater
  * Text Domain:     figurentheater
  * Domain Path:     /languages
- * Version:         1.0.30
+ * Version:         1.0.31
  *
  * @package         figuren-theater/ft-data
  */
