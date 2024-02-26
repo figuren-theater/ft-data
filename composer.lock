@@ -4,21 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2a3aa58681148fff301a6f4bbf71351",
+    "content-hash": "d52b290e616297dc1322375761dcbf22",
     "packages": [
         {
             "name": "10up/distributor",
-            "version": "1.9.1",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/distributor",
-                "reference": "7e1dd94df9d1aa36755d4c10b9535cc790c1b33a"
+                "reference": "9accef30b78cb10843657c2e8d3277141f34e8c9"
             },
             "require": {
                 "ext-json": "*",
-                "georgestephanis/application-passwords": "0.1.3",
-                "php": ">=5.6",
-                "yahnis-elsts/plugin-update-checker": "4.13"
+                "php": ">=7.4",
+                "yahnis-elsts/plugin-update-checker": "5.1"
             },
             "require-dev": {
                 "10up/phpcs-composer": "dev-master",
@@ -35,7 +34,7 @@
             },
             "scripts": {
                 "lint": [
-                    "phpcs . --runtime-set testVersion 5.6-"
+                    "@php phpcs . --runtime-set testVersion 7.4-"
                 ],
                 "lint-fix": [
                     "phpcbf ."
@@ -55,7 +54,7 @@
             ],
             "description": "Distributor is a WordPress plugin that makes it easy to distribute and reuse content across your websites — whether in a single multisite or across the web.",
             "homepage": "https://distributorplugin.com/",
-            "time": "2023-03-15T22:37:44+00:00"
+            "time": "2024-01-18T17:29:54+00:00"
         },
         {
             "name": "composer/installers",
@@ -346,55 +345,6 @@
                 "source": "https://github.com/figuren-theater/ft-options"
             },
             "time": "2023-09-11T10:27:33+00:00"
-        },
-        {
-            "name": "georgestephanis/application-passwords",
-            "version": "0.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/WordPress/application-passwords.git",
-                "reference": "e23f69f1f4817975e0b30959ed7e7d6c0264603e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/application-passwords/zipball/e23f69f1f4817975e0b30959ed7e7d6c0264603e",
-                "reference": "e23f69f1f4817975e0b30959ed7e7d6c0264603e",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "wp-coding-standards/wpcs": "^2.1",
-                "wpsh/local": "^0.2.3",
-                "xwp/wp-dev-lib": "^1.2"
-            },
-            "type": "wordpress-plugin",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "George Stephanis",
-                    "email": "georgestephanis@automattic.com",
-                    "homepage": "https://github.com/georgestephanis"
-                }
-            ],
-            "description": "Provide Application Passwords for WordPress core",
-            "homepage": "https://github.com/WordPress/application-passwords",
-            "keywords": [
-                "api",
-                "application Ppasswords",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/WordPress/application-passwords/issues",
-                "source": "https://github.com/WordPress/application-passwords/tree/0.1.3"
-            },
-            "abandoned": true,
-            "time": "2021-05-07T06:56:59+00:00"
         },
         {
             "name": "humanmade/utility-taxonomy",
@@ -911,26 +861,26 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.13",
+            "version": "v5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7"
+                "reference": "48b03e93c9c2587f9276dce00ce2b6d94c1190d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
-                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/48b03e93c9c2587f9276dce00ce2b6d94c1190d2",
+                "reference": "48b03e93c9c2587f9276dce00ce2b6d94c1190d2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=5.2.0"
+                "php": ">=5.6.20"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "load-v4p13.php"
+                    "load-v5p1.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -941,7 +891,7 @@
                 {
                     "name": "Yahnis Elsts",
                     "email": "whiteshadow@w-shadow.com",
-                    "homepage": "http://w-shadow.com/",
+                    "homepage": "https://w-shadow.com/",
                     "role": "Developer"
                 }
             ],
@@ -955,9 +905,9 @@
             ],
             "support": {
                 "issues": "https://github.com/YahnisElsts/plugin-update-checker/issues",
-                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v4.13"
+                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v5.1"
             },
-            "time": "2022-07-29T12:36:25+00:00"
+            "time": "2023-05-20T11:55:43+00:00"
         }
     ],
     "packages-dev": [
