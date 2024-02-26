@@ -291,16 +291,16 @@
         },
         {
             "name": "figuren-theater/ft-options",
-            "version": "1.2.3",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/figuren-theater/ft-options.git",
-                "reference": "127e6c8bb62cce778ee7468aa548c8326fe9c29a"
+                "reference": "19baf021113cdfd91facdd9750820ac22f631330"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/figuren-theater/ft-options/zipball/127e6c8bb62cce778ee7468aa548c8326fe9c29a",
-                "reference": "127e6c8bb62cce778ee7468aa548c8326fe9c29a",
+                "url": "https://api.github.com/repos/figuren-theater/ft-options/zipball/19baf021113cdfd91facdd9750820ac22f631330",
+                "reference": "19baf021113cdfd91facdd9750820ac22f631330",
                 "shasum": ""
             },
             "require": {
@@ -308,7 +308,7 @@
                 "php": ">=7.4"
             },
             "require-dev": {
-                "figuren-theater/code-quality": "*"
+                "figuren-theater/code-quality": "^1.1"
             },
             "type": "wordpress-muplugin",
             "autoload": {
@@ -345,7 +345,7 @@
                 "issues": "https://github.com/figuren-theater/ft-options/issues",
                 "source": "https://github.com/figuren-theater/ft-options"
             },
-            "time": "2023-09-11T10:27:33+00:00"
+            "time": "2024-02-24T14:02:32+00:00"
         },
         {
             "name": "georgestephanis/application-passwords",
