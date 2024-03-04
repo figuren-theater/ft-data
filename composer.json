@@ -31,7 +31,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "10up/distributor": "1.9.1",
+        "10up/distributor": "2.0.4",
         "devgeniem/shadow-taxonomy": "dev-master",
         "figuren-theater/ft-network-sourcelinks": "0.9.1",
         "figuren-theater/ft-options": "*",
