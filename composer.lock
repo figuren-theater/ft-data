@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be9bfc5689492f5cad162d6fa039e880",
+    "content-hash": "73db03c1c80d10bbddd154a58e0b5050",
     "packages": [
         {
             "name": "10up/distributor",
@@ -542,16 +542,16 @@
         },
         {
             "name": "johnbillion/extended-cpts",
-            "version": "5.0.9",
+            "version": "5.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnbillion/extended-cpts.git",
-                "reference": "98e974fd972205b419d658a18afa5f22350f477d"
+                "reference": "9a4bdc9d25a649376376ae46af4c830686f136d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnbillion/extended-cpts/zipball/98e974fd972205b419d658a18afa5f22350f477d",
-                "reference": "98e974fd972205b419d658a18afa5f22350f477d",
+                "url": "https://api.github.com/repos/johnbillion/extended-cpts/zipball/9a4bdc9d25a649376376ae46af4c830686f136d0",
+                "reference": "9a4bdc9d25a649376376ae46af4c830686f136d0",
                 "shasum": ""
             },
             "require": {
@@ -563,7 +563,7 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
                 "johnbillion/falsey-assertequals-detector": "*",
                 "johnbillion/plugin-infrastructure": "dev-trunk",
-                "johnbillion/wp-compat": "0.1.0",
+                "johnbillion/wp-compat": "0.3.0",
                 "lucatume/wp-browser": ">=3.0.21 <3.5",
                 "phpcompatibility/phpcompatibility-wp": "^2",
                 "phpstan/phpstan": "1.12.2",
@@ -600,7 +600,7 @@
             "homepage": "https://github.com/johnbillion/extended-cpts/",
             "support": {
                 "issues": "https://github.com/johnbillion/extended-cpts/issues",
-                "source": "https://github.com/johnbillion/extended-cpts/tree/5.0.9"
+                "source": "https://github.com/johnbillion/extended-cpts/tree/5.0.10"
             },
             "funding": [
                 {
@@ -608,7 +608,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-29T16:07:18+00:00"
+            "time": "2024-11-14T14:59:43+00:00"
         },
         {
             "name": "johnpbloch/wordpress",
