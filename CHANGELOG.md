@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased](https://github.com/figuren-theater/ft-data/compare/1.0.34...HEAD)
+## [Unreleased](https://github.com/figuren-theater/ft-data/compare/1.0.35...HEAD)
+
+## [1.0.35](https://github.com/figuren-theater/ft-data/compare/1.0.34...1.0.35) - 2025-12-11
+
+### Dependency Updates & Maintenance
+
+- Bump figuren-theater/code-quality from 1.2.1 to 2.0.0 ([#40](https://github.com/figuren-theater/ft-data/pull/40))
+- Bump johnbillion/extended-cpts from 5.0.10 to 5.0.11 ([#39](https://github.com/figuren-theater/ft-data/pull/39))
+- Bump johnbillion/extended-cpts from 5.0.9 to 5.0.10 ([#38](https://github.com/figuren-theater/ft-data/pull/38))
 
 ## [1.0.34](https://github.com/figuren-theater/ft-data/compare/1.0.32...1.0.34) - 2024-10-25
 
