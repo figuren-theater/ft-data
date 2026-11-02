@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38163b7f21a5365f74fbf012a156726e",
+    "content-hash": "514c9c68e7d7f17537217593178c6731",
     "packages": [
         {
             "name": "10up/distributor",
@@ -800,35 +800,39 @@
         },
         {
             "name": "rss-bridge/rss-bridge",
-            "version": "2022-06-14",
+            "version": "2026-09-30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RSS-Bridge/rss-bridge.git",
-                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b"
+                "reference": "f4aa9e0419d79e9545c53a7231721680ed8bafd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RSS-Bridge/rss-bridge/zipball/9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
-                "reference": "9503f9ad7fe84a5fca63d9dbb3005d640ddb7a0b",
+                "url": "https://api.github.com/repos/RSS-Bridge/rss-bridge/zipball/f4aa9e0419d79e9545c53a7231721680ed8bafd4",
+                "reference": "f4aa9e0419d79e9545c53a7231721680ed8bafd4",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-filter": "*",
                 "ext-json": "*",
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
                 "ext-simplexml": "*",
-                "php": ">=7.1"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9",
-                "squizlabs/php_codesniffer": "^3.6"
+                "squizlabs/php_codesniffer": "^4"
             },
             "suggest": {
-                "ext-dom": "Allows to use some bridges based on XPath expressions",
+                "ext-intl": "Required for OLXBridge",
                 "ext-memcached": "Allows to use memcached as cache type",
-                "ext-sqlite3": "Allows to use an SQLite database for caching"
+                "ext-sqlite3": "Allows to use an SQLite database for caching",
+                "ext-zip": "Required for FDroidRepoBridge",
+                "php-webdriver/webdriver": "Required for Selenium usage"
             },
             "type": "project",
             "notification-url": "https://packagist.org/downloads/",
@@ -854,7 +858,7 @@
                 "rss": "https://github.com/RSS-Bridge/rss-bridge/commits/master.atom",
                 "source": "https://github.com/rss-bridge/rss-bridge/"
             },
-            "time": "2022-06-14T13:47:12+00:00"
+            "time": "2026-08-28T16:45:52+00:00"
         },
         {
             "name": "tlovett1/feed-pull",
@@ -2829,6 +2833,6 @@
     "platform": {
         "php": ">=7.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
