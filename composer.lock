@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38163b7f21a5365f74fbf012a156726e",
+    "content-hash": "53de1c5962252fc3e033b39b0962d8ff",
     "packages": [
         {
             "name": "10up/distributor",
@@ -888,15 +888,15 @@
         },
         {
             "name": "wpackagist-plugin/term-management-tools",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/term-management-tools/",
-                "reference": "tags/2.0.1"
+                "reference": "tags/2.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/term-management-tools.2.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/term-management-tools.2.0.2.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -2829,6 +2829,6 @@
     "platform": {
         "php": ">=7.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }

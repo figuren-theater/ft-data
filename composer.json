@@ -40,7 +40,7 @@
         "rss-bridge/rss-bridge": "2022-06-14",
         "tlovett1/feed-pull": "dev-master",
         "wpackagist-plugin/distributor-remote-quickedit": "*",
-        "wpackagist-plugin/term-management-tools": "2.0.1"
+        "wpackagist-plugin/term-management-tools": "2.0.2"
     },
     "require-dev": {
         "figuren-theater/code-quality": "*"
